@@ -1,0 +1,17 @@
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore.Tests\bin\Debug\netcoreapp2.0\ToDoListServerCore.Tests.deps.json
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore.Tests\bin\Debug\netcoreapp2.0\ToDoListServerCore.Tests.dll
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore.Tests\obj\Debug\netcoreapp2.0\ToDoListServerCore.Tests.csprojAssemblyReference.cache
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore.Tests\obj\Debug\netcoreapp2.0\ToDoListServerCore.Tests.csproj.CoreCompileInputs.cache
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore.Tests\obj\Debug\netcoreapp2.0\ToDoListServerCore.Tests.AssemblyInfoInputs.cache
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore.Tests\obj\Debug\netcoreapp2.0\ToDoListServerCore.Tests.AssemblyInfo.cs
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore.Tests\bin\Debug\netcoreapp2.0\ToDoListServerCore.Tests.runtimeconfig.json
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore.Tests\bin\Debug\netcoreapp2.0\ToDoListServerCore.Tests.runtimeconfig.dev.json
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore.Tests\bin\Debug\netcoreapp2.0\xunit.runner.visualstudio.dotnetcore.testadapter.dll
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore.Tests\bin\Debug\netcoreapp2.0\xunit.runner.reporters.netcoreapp10.dll
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore.Tests\bin\Debug\netcoreapp2.0\xunit.runner.utility.netcoreapp10.dll
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore.Tests\bin\Debug\netcoreapp2.0\ToDoListServerCore.dll
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore.Tests\bin\Debug\netcoreapp2.0\ToDoListServerCore.pdb
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore.Tests\obj\Debug\netcoreapp2.0\ToDoListServerCore.Tests.csproj.CopyComplete
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore.Tests\bin\Debug\netcoreapp2.0\ToDoListServerCore.Tests.pdb
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore.Tests\obj\Debug\netcoreapp2.0\ToDoListServerCore.Tests.dll
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore.Tests\obj\Debug\netcoreapp2.0\ToDoListServerCore.Tests.pdb

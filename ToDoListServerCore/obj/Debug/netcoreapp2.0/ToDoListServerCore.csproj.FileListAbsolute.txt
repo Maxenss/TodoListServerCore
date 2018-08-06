@@ -1,0 +1,11 @@
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore\bin\Debug\netcoreapp2.0\ToDoListServerCore.deps.json
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore\bin\Debug\netcoreapp2.0\ToDoListServerCore.runtimeconfig.json
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore\bin\Debug\netcoreapp2.0\ToDoListServerCore.runtimeconfig.dev.json
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore\bin\Debug\netcoreapp2.0\ToDoListServerCore.dll
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore\obj\Debug\netcoreapp2.0\ToDoListServerCore.csprojAssemblyReference.cache
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore\obj\Debug\netcoreapp2.0\ToDoListServerCore.csproj.CoreCompileInputs.cache
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore\obj\Debug\netcoreapp2.0\ToDoListServerCore.AssemblyInfoInputs.cache
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore\obj\Debug\netcoreapp2.0\ToDoListServerCore.AssemblyInfo.cs
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore\bin\Debug\netcoreapp2.0\ToDoListServerCore.pdb
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore\obj\Debug\netcoreapp2.0\ToDoListServerCore.dll
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore\obj\Debug\netcoreapp2.0\ToDoListServerCore.pdb
