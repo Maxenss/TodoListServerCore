@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,10 +23,18 @@ namespace ToDoListServerCore.Controllers
         private readonly IRepository _context;
         private readonly IConfiguration _configuration;
 
-        public AccountController(DBContext context, IConfiguration configuration)
+        public AccountController(DBContext context, IHostingEnvironment env)
         {
             _context = context;
-            _configuration = configuration;
+
+            // Set up configuration sources.
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json")
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+
+            builder.AddEnvironmentVariables();
+            _configuration = builder.Build();
         }
 
         // signup

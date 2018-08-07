@@ -18,12 +18,22 @@ namespace ToDoListServerCore
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
+        IHostingEnvironment env;
         public IConfiguration Configuration { get; }
+
+        public Startup(IHostingEnvironment _env)
+        {
+            env = _env;
+
+            // Set up configuration sources.
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(_env.ContentRootPath)
+                .AddJsonFile("appsettings.json")
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+
+            builder.AddEnvironmentVariables();
+            Configuration = builder.Build();
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)

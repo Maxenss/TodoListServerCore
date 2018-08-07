@@ -23,9 +23,11 @@ namespace ToDoListServerCore.DB
         TodoTask GetTodoTaskById(int id);
 
         void AddUser(User user);
+        void RemoveUser(User user);
         void AddTodoList(TodoList todoList);
         void AddTodoTask(TodoTask todoTask);
         void RemoveTodoList(TodoList todoList);
+        void RemoveTodoTask(TodoTask todoTask);
         void UpdateTodoList(TodoList todoList);
         void UpdateTodoTask(TodoTask todoTask);
     }

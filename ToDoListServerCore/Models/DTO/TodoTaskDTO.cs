@@ -29,5 +29,7 @@ namespace ToDoListServerCore.Models.DTO
             Description = todoTask.Description;
             TaskStatus = todoTask.TaskStatus;
         }
+
+        public TodoTaskDTO() { }
     }
 }

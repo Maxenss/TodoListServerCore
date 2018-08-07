@@ -29,7 +29,7 @@ namespace ToDoListServerCore.Controllers
         }
 
         [Authorize]
-        [HttpPost("createList")]
+        [HttpPost]
         public async Task<IActionResult> CreateList([FromBody] CreateListDTO createListDTO)
         {
             if (ModelState.IsValid)
@@ -63,7 +63,7 @@ namespace ToDoListServerCore.Controllers
 
         [Authorize]
         [HttpDelete("{listId}")]
-        public async Task<IActionResult> DeleteList([FromRoute] int listId)
+        public async Task<IActionResult> DeleteList(int listId)
         {
             if (ModelState.IsValid)
             {
@@ -113,7 +113,7 @@ namespace ToDoListServerCore.Controllers
 
                 _context.UpdateTodoList(todoList);
 
-                return Ok("Todo List has been updated");
+                return Ok(todoList);
             }
 
             return BadRequest();

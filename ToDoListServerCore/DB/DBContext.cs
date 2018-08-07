@@ -59,41 +59,52 @@ namespace ToDoListServerCore.DB
             return this.TodoLists.SingleOrDefault(l => l.UserId == userId && l.Title == title);
         }
 
-        public TodoList GetTodoListByListIdAndUserId(int listId, int userId) {
+        public TodoList GetTodoListByListIdAndUserId(int listId, int userId)
+        {
             return this.TodoLists.Include(t => t.Tasks)
                 .SingleOrDefault(l => l.Id == listId && l.UserId == userId);
         }
 
-        public List<TodoList> GetTodoListsByUserId(int userId) {
+        public List<TodoList> GetTodoListsByUserId(int userId)
+        {
             List<TodoList> todoLists = TodoLists.Include(t => t.Tasks)
                .Where(t => t.UserId == userId).ToList();
 
             return todoLists;
         }
 
-        public TodoTask GetTodoTaskById(int id) {
+        public TodoTask GetTodoTaskById(int id)
+        {
             return TodoTasks.SingleOrDefault(t => t.Id == id);
         }
 
-        public async void AddUser(User user)
+        public void AddUser(User user)
         {
-            await Users.AddAsync(user);
-            await SaveChangesAsync();
+            Users.Add(user);
+            SaveChanges();
         }
 
-        public async void AddTodoList(TodoList todoList) {
-            await TodoLists.AddAsync(todoList);
-            await SaveChangesAsync();
+        public void RemoveUser(User user) {
+            Users.Remove(user);
+            SaveChanges();
         }
 
-        public async void AddTodoTask(TodoTask todoTask) {
-           await TodoTasks.AddAsync(todoTask);
-            await SaveChangesAsync();
+        public void AddTodoList(TodoList todoList)
+        {
+            TodoLists.Add(todoList);
+            SaveChanges();
         }
 
-        public async void RemoveTodoList(TodoList todoList) {
+        public void AddTodoTask(TodoTask todoTask)
+        {
+            TodoTasks.Add(todoTask);
+            SaveChanges();
+        }
+
+        public  void RemoveTodoList(TodoList todoList)
+        {
             TodoLists.Remove(todoList);
-            await SaveChangesAsync();
+            SaveChanges();
         }
 
         public async void UpdateTodoList(TodoList todoList)
@@ -102,9 +113,17 @@ namespace ToDoListServerCore.DB
             await SaveChangesAsync();
         }
 
-        public async void UpdateTodoTask(TodoTask todoTask) {
-            Update(todoTask);
+        public  void UpdateTodoTask(TodoTask todoTask)
+        {
+            TodoTasks.Update(todoTask);
+             SaveChanges();
+        }
+
+        public async void RemoveTodoTask(TodoTask todoTask)
+        {
+            Remove(todoTask);
             await SaveChangesAsync();
         }
+
     }
 }
