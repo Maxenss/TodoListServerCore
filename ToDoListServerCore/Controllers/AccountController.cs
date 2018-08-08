@@ -92,9 +92,7 @@ namespace ToDoListServerCore.Controllers
         public async Task<IActionResult> SignIn([FromBody] SignInDTO signInDTO)
         {
             if (!ModelState.IsValid || signInDTO == null)
-            {
-                return BadRequest("Model state is not valid.");
-            }
+                return BadRequest("Error: Model state is not valid.");
 
             // Email validation
             if (signInDTO.Email == null || signInDTO.Email == String.Empty)
