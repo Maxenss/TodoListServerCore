@@ -44,7 +44,7 @@ namespace ToDoListServerCore.Controllers
         public async Task<IActionResult> SignUp([FromBody] SignUpDTO signUpDTO)
         {
             if (!ModelState.IsValid)
-                return BadRequest("Model state is not valid.");
+                return BadRequest("Error: Model state is not valid.");
 
             // Email validation
             if (signUpDTO.Email == null || signUpDTO.Email == String.Empty) 
@@ -66,7 +66,7 @@ namespace ToDoListServerCore.Controllers
             User existUser =  _context.GetUserByEmail(signUpDTO.Email);
 
             if (existUser != null)
-                return BadRequest("User with this email already exist.");
+                return BadRequest("Error: User with this email already exist.");
 
             User user = new User(signUpDTO.Name, signUpDTO.Email, signUpDTO.Password);
             user.TodoLists = new List<Models.TodoList>();
