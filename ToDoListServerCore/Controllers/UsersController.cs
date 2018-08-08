@@ -32,13 +32,13 @@ namespace ToDoListServerCore.Controllers
         public async Task<IActionResult> DeleteUser()
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return BadRequest("Error: Model state is not valid.");
 
             int userId = User.GetUserId();
 
             var user = _context.GetUserById(userId);
             if (user == null)
-                return NotFound();
+                return NotFound("Error: User not found.");
 
             _context.RemoveUser(user);
 
@@ -54,12 +54,12 @@ namespace ToDoListServerCore.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(int id) {
             if (!ModelState.IsValid)
-                return BadRequest("Model state is not valid");
+                return BadRequest("Error: Model state is not valid");
 
             User user = _context.GetUserById(id);
 
             if (user == null)
-                return NotFound("User not found");
+                return NotFound("Error: User not found");
 
             return Ok(user);
         }

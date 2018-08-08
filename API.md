@@ -4,7 +4,7 @@
 
 * **URL**
 
-   /users/signup
+   api/account/signup
 
 * **Method:**
   
@@ -79,11 +79,11 @@
 
 **User Sign In**
 ----
-  Post method for add new user on server.
+  Post method for authorization user on server.
 
 * **URL**
 
-   /users/signin
+   api/account/signin
 
 * **Method:**
   
@@ -146,5 +146,75 @@
 
   `{
 	"email":"user@gmail.com",
-	"password":"123456",
+	"password":"123456"
 }`
+
+
+**Delete User**
+----
+  Delete method for remove user from server.
+
+* **URL**
+
+   api/users
+
+* **Method:**
+  
+  `DELETE`
+  
+* **Headers Params**
+
+   Authorization: Bearer :token
+
+* **Success Response:**
+
+  * **Code:** 200 Ok<br />
+    **Content:** `User has been deleted.`
+ 
+* **Error Response:**
+
+  * **Code:** 400 Bad Request <br />
+    **Content:** `Error: Model state is not valid.`
+
+  OR
+
+  * **Code:** 404 Not Found <br />
+    **Content:** `Error: User not found.`
+
+**Get User**
+----
+  Get json with user from server.
+
+* **URL**
+
+   api/users/:id
+
+* **Method:**
+  
+  `GET`
+  
+* **Headers Params**
+
+   Authorization: Bearer :token
+
+* **Success Response:**
+
+  * **Code:** 200 Ok<br />
+    **Content:** `{
+    "id": 2092,
+    "name": "New User",
+    "email": "newuser2@gmail.com",
+    "password": "123456",
+    "todoLists": []
+}`
+ 
+* **Error Response:**
+
+  * **Code:** 400 Bad Request <br />
+    **Content:** `Error: Model state is not valid`
+
+  OR
+
+  * **Code:** 404 Not Found <br />
+    **Content:** `Error: User not found.`
+  

@@ -8,3 +8,4 @@ C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore\obj\Debug\netco
 C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore\bin\Debug\netcoreapp2.0\ToDoListServerCore.pdb
 C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore\obj\Debug\netcoreapp2.0\ToDoListServerCore.dll
 C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore\obj\Debug\netcoreapp2.0\ToDoListServerCore.pdb
+C:\Work\Projects\Some Work\ToDoListServerCore\ToDoListServerCore\obj\Debug\netcoreapp2.0\ToDoListServerCore.csprojAssemblyReference.cache
