@@ -25,64 +25,71 @@ namespace ToDoListServerCore.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Method for get TodoTasks in TodoList.
+        /// </summary>
+        /// <param name="taskListId">TodoList's ID for get tasks.</param>
+        /// <returns></returns>
         [Authorize]
         [HttpGet("{taskListId}")]
         public async Task<IActionResult> GetTasks(int taskListId)
         {
-            if (ModelState.IsValid)
-            {
-                int userId = this.User.GetUserId();
+            if (!ModelState.IsValid)
+                return BadRequest("Error: Model state is not valid.");
 
-                User user = _context.GetUserById(userId);
+            int userId = this.User.GetUserId();
 
-                if (user == null)
-                    return NotFound("User with this id not found.");
+            User user = _context.GetUserById(userId);
 
-                TodoList todoList = _context.GetTodoListByListIdAndUserId(taskListId, userId);
+            if (user == null)
+                return NotFound("Error: User with this id not found.");
 
-                if (todoList == null)
-                    return NotFound("Todo list not found.");
+            TodoList todoList =
+                _context.GetTodoListByListIdAndUserId(taskListId, userId);
 
-                return Ok(todoList);
-            }
+            if (todoList == null)
+                return NotFound("Error: Todo list not found.");
 
-            return BadRequest("Model state is not valid.");
+            return Ok(todoList);
         }
 
+        /// <summary>
+        /// Method for create TodoList.
+        /// </summary>
+        /// <param name="createToDoTaskDTO">DTO for creating TodoList</param>
+        /// <returns></returns>
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateTask([FromBody] CreateToDoTaskDTO createToDoTaskDTO)
         {
             if (!ModelState.IsValid)
-            {
-                return BadRequest("Model state is not valid.");
-            }
+                return BadRequest("Error: Model state is not valid.");
 
             if (createToDoTaskDTO == null)
-                return BadRequest("Model state is not valid.");
+                return BadRequest("Error: Model state is not valid.");
 
             if (createToDoTaskDTO.ToDoListId < 1)
-                return BadRequest("Todo list id cannot be negative.");
+                return BadRequest("Error: Todo list id cannot be negative.");
 
             if (createToDoTaskDTO.Title == null || createToDoTaskDTO.Title == String.Empty)
-                return BadRequest("Todo task title cannot be empty.");
+                return BadRequest("Error: Todo task title cannot be empty.");
 
-            if (createToDoTaskDTO.Description == null 
+            if (createToDoTaskDTO.Description == null
                 || createToDoTaskDTO.Description == String.Empty)
-                return BadRequest("Todo task description cannot be empty.");
+                return BadRequest("Error: Todo task description cannot be empty.");
 
             int userId = User.GetUserId();
 
             User user = _context.GetUserById(userId);
 
             if (user == null)
-                return NotFound("User with this id not found.");
+                return NotFound("Error: User with this id not found.");
 
             TodoList existTodoList =
                 _context.GetTodoListByListIdAndUserId(createToDoTaskDTO.ToDoListId, userId);
 
             if (existTodoList == null)
-                return NotFound("This user not have todo list with this id");
+                return NotFound("Error: This user not have todo list with this id");
 
             TodoTask todoTask = new TodoTask(createToDoTaskDTO.ToDoListId
                 , createToDoTaskDTO.Title, createToDoTaskDTO.Description);
@@ -100,73 +107,79 @@ namespace ToDoListServerCore.Controllers
             return Created(objectLocation, new TodoTaskDTO(todoTask));
         }
 
+        /// <summary>
+        /// Method for changing the status of a task.
+        /// </summary>
+        /// <param name="taskId">TodoTask's ID for set status.</param>
+        /// <param name="status">New status.</param>
+        /// <returns></returns>
         [Authorize]
         [HttpPatch("{taskId}/setstatus/{status}")]
         public async Task<IActionResult> SetTaskStatus(int taskId, Status status)
         {
             if (!ModelState.IsValid)
-            {
-                return BadRequest("Model state is not valid.");
-            }
+                return BadRequest("Error: Model state is not valid.");
 
-            if (taskId < 1) {
-                return BadRequest("Task id cannot be negative.");
-            }
-
-            int userId = this.User.GetUserId();
-
-                User user = _context.GetUserById(userId);
-
-                if (user == null)
-                    return NotFound("User with this id not found.");
-
-                TodoTask todoTask = _context.GetTodoTaskById(taskId);
-
-                if (todoTask == null)
-                    return NotFound("Todo task with this id not found.");
-
-                if (user.TodoLists.SingleOrDefault(l => l.Id == todoTask.ToDoListId) == null)
-                    return NotFound("Todo list with this id not found.");
-
-                todoTask.TaskStatus = status;
-
-                _context.UpdateTodoTask(todoTask);
-
-                return Ok(new TodoTaskDTO(todoTask));
-        }
-
-        [Authorize]
-        [HttpPut]
-        public async Task<IActionResult> UpdateTask([FromBody] UpdateToDoTaskDTO updateToDoTaskDTO)
-        {
-            if (!ModelState.IsValid || updateToDoTaskDTO == null)
-            {
-                return BadRequest("Model state is not valid.");
-            }
-
-            if (updateToDoTaskDTO.TaskId < 1)
-                return BadRequest("Task id cannot be an empty");
-
-            if (updateToDoTaskDTO.Title == null || updateToDoTaskDTO.Title.Length == 0) 
-                return BadRequest("Task title cannot be an empty");
-
-            if (updateToDoTaskDTO.Description == null || updateToDoTaskDTO.Description.Length == 0)
-                return BadRequest("Task description cannot be an empty");
+            if (taskId < 1)
+                return BadRequest("Error: Task id cannot be negative.");
 
             int userId = this.User.GetUserId();
 
             User user = _context.GetUserById(userId);
 
             if (user == null)
-                return NotFound("User with this id not found.");
+                return NotFound("Error: User with this id not found.");
+
+            TodoTask todoTask = _context.GetTodoTaskById(taskId);
+
+            if (todoTask == null)
+                return NotFound("Error: Todo task with this id not found.");
+
+            if (user.TodoLists.SingleOrDefault(l => l.Id == todoTask.ToDoListId) == null)
+                return NotFound("Error: Todo list with this id not found.");
+
+            todoTask.TaskStatus = status;
+
+            _context.UpdateTodoTask(todoTask);
+
+            return Ok(new TodoTaskDTO(todoTask));
+        }
+
+        /// <summary>
+        /// Method for update TodoTask.
+        /// </summary>
+        /// <param name="updateToDoTaskDTO">DTO for change TodoTask</param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpPut]
+        public async Task<IActionResult> UpdateTask([FromBody] UpdateToDoTaskDTO updateToDoTaskDTO)
+        {
+            if (!ModelState.IsValid || updateToDoTaskDTO == null)
+                return BadRequest("Error: Model state is not valid.");
+
+            if (updateToDoTaskDTO.TaskId < 1)
+                return BadRequest("Error: Task id cannot be an empty.");
+
+            if (updateToDoTaskDTO.Title == null || updateToDoTaskDTO.Title.Length == 0)
+                return BadRequest("Error: Task title cannot be an empty.");
+
+            if (updateToDoTaskDTO.Description == null || updateToDoTaskDTO.Description.Length == 0)
+                return BadRequest("Error: Task description cannot be an empty.");
+
+            int userId = this.User.GetUserId();
+
+            User user = _context.GetUserById(userId);
+
+            if (user == null)
+                return NotFound("Error: User with this id not found.");
 
             TodoTask todoTask = _context.GetTodoTaskById(updateToDoTaskDTO.TaskId);
 
             if (todoTask == null)
-                return NotFound("Todo task with this id not found.");
+                return NotFound("Error: Todo task with this id not found.");
 
             if (user.TodoLists.SingleOrDefault(l => l.Id == todoTask.ToDoListId) == null)
-                return NotFound("Todo list with this id not found.");
+                return NotFound("Error: Todo list with this id not found.");
 
             todoTask.Description = updateToDoTaskDTO.Description;
             todoTask.Title = updateToDoTaskDTO.Title;
@@ -177,39 +190,33 @@ namespace ToDoListServerCore.Controllers
             return Ok(todoTask);
         }
 
+        /// <summary>
+        /// Method for delete TodoTask.
+        /// </summary>
+        /// <param name="id">TodoTask's ID for delete</param>
+        /// <returns></returns>
         [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTask(int id)
         {
             if (!ModelState.IsValid)
-                return BadRequest("Model state is not valid.");
+                return BadRequest("Error: Model state is not valid.");
 
             int userId = User.GetUserId();
 
             User user = _context.GetUserById(userId);
 
             if (user == null)
-            {
-                return NotFound("User not found");
-            }
+                return NotFound("Error: User not found.");
 
             TodoTask todoTask = _context.GetTodoTaskById(id);
 
             if (todoTask == null)
-                return NotFound();
+                return NotFound("Error: User with this id not found.");
 
             _context.RemoveTodoTask(todoTask);
 
             return Ok("Todo Task has been deleted.");
         }
-
-
-        //   [HttpGet("taskstatuses")]
-        //   public async Task<IActionResult> GetStatusEnum()
-        //   {
-        //       TodoTask.Status statuses = new TodoTask.Status();
-        //
-        //       return Ok(Json(statuses));
-        //   }
     }
 }

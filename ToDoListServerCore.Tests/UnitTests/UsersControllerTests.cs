@@ -18,7 +18,7 @@ namespace ToDoListServerCore.Tests.UnitTests
 
         [Fact]
         public void DeleteUser_ReturnCorrectDeletedUser() {
-            // Arrange
+            #region Arrange
             User user = new User(1, "Name1", "Email1", "Pass1");
 
             Extensions.Extensions.IsUnitTest = true;
@@ -26,19 +26,22 @@ namespace ToDoListServerCore.Tests.UnitTests
             model = new Mock<IRepository>();
             model.Setup(repo => repo.GetUserById(user.Id)).Returns(user);
             model.Setup(repo => repo.RemoveUser(user));
+            #endregion
 
-            // Act
+            #region Act
             controller = new UsersController(model.Object);
             var result = controller.DeleteUser();
+            #endregion
 
-            // Assert
+            #region Assert
             var okObjectResult = Assert.IsType<OkObjectResult>(result.Result);
+            #endregion
         }
 
         [Fact]
         public void DeleteUser_ReturnUserNotFound()
         {
-            // Arrange
+            #region Arrange
             User nullUser = null;
             int userId = 2;
 
@@ -46,13 +49,16 @@ namespace ToDoListServerCore.Tests.UnitTests
 
             model = new Mock<IRepository>();
             model.Setup(repo => repo.GetUserById(userId)).Returns(nullUser);
+            #endregion
 
-            // Act
+            #region Act
             controller = new UsersController(model.Object);
             var result = controller.DeleteUser();
+            #endregion
 
-            // Assert
+            #region Assert
             var okObjectResult = Assert.IsType<NotFoundResult>(result.Result);
+            #endregion
         }
     }
 }

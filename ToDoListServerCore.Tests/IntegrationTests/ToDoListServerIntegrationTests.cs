@@ -37,10 +37,10 @@ namespace ToDoListServerCore.Tests
         public async Task System_Test()
         {
             // Sign Up Test
-            var user = await SignUpPost();
+            User user = await SignUpPost();
 
             // Sign In Test
-            var userDTO = await SignInPost();
+            UserDTO userDTO = await SignInPost();
             var token = userDTO.Token;
 
             // Set authorization header for authorization
@@ -75,9 +75,6 @@ namespace ToDoListServerCore.Tests
 
             // Set List Title Test
             await SetListTitle(todoList.Id, "Updated Title");
-
-            // Delete User Test
-            await DeleteUser();
         }
 
         private async Task<User> SignUpPost()
@@ -263,6 +260,7 @@ namespace ToDoListServerCore.Tests
                 = JsonConvert.DeserializeObject<List<TodoList>>(responseString);
             Assert.NotNull(todoLists);
             Assert.Equal(todoLists.Count, countOfLists);
+
             return todoLists;
         }
 

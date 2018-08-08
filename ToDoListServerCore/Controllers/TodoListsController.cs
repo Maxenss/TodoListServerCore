@@ -20,37 +20,43 @@ namespace ToDoListServerCore.Controllers
     {
         private readonly IRepository _context;
 
-
         public TodoListsController(IRepository context)
         {
             _context = context;
         }
 
+        /// <summary>
+        /// Method for create TodoList.
+        /// </summary>
+        /// <param name="createListDTO">DTO for creating TodoList</param>
+        /// <returns>Created TodoList</returns>
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateList([FromBody] CreateListDTO createListDTO)
         {
             if (!ModelState.IsValid)
-                return BadRequest("Model state is not valid.");
+                return BadRequest("Error: Model state is not valid.");
 
             if (createListDTO == null ||
                 createListDTO.Title == String.Empty)
-                return BadRequest("Title is empty");
+                return BadRequest("Error: Title is empty.");
 
             string title = createListDTO.Title;
 
-            if (title == null || title.Length == 0) return BadRequest("Title cannot to be empty");
+            if (title == null || title.Length == 0)
+                return BadRequest("Error: Title cannot to be empty.");
 
             var userId = this.User.GetUserId();
 
             User user = _context.GetUserById(userId);
 
-            if (user == null) return NotFound();
+            if (user == null)
+                return NotFound("Error: User not found.");
 
             TodoList existToDoList = _context.GetTodoListByTitleAndUserId(title, userId);
 
             if (existToDoList != null)
-                return BadRequest("This Todo List already exist");
+                return BadRequest("Errod: This Todo List already exist.");
 
             TodoList todoList = new TodoList(userId, title);
             _context.AddTodoList(todoList);
@@ -59,106 +65,126 @@ namespace ToDoListServerCore.Controllers
                 return Created("localhost", todoList);
 
             string webRootPath = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
-            string objectLocation = webRootPath + "/" + "api/users/" + todoList.Id.ToString();
+            string objectLocation = webRootPath + "/" + "api/todolists/" + todoList.Id.ToString();
             return Created(objectLocation, todoList);
         }
 
+        /// <summary>
+        /// Method for delete TodoList.
+        /// </summary>
+        /// <param name="listId">TodoList ID for delete</param>
+        /// <returns></returns>
         [Authorize]
         [HttpDelete("{listId}")]
         public async Task<IActionResult> DeleteList(int listId)
         {
-            if (ModelState.IsValid)
-            {
-                if (listId < 1)
-                    return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest("Error: Model state is not valid.");
 
-                var userId = this.User.GetUserId();
+            if (listId < 1)
+                return BadRequest("Error: List id cannot be negative.");
 
-                User user = _context.GetUserById(userId);
+            var userId = this.User.GetUserId();
 
-                if (user == null) return NotFound("User with this id not found");
+            User user = _context.GetUserById(userId);
 
-                TodoList todoList = _context.GetTodoListByListIdAndUserId(listId, userId);
+            if (user == null)
+                return NotFound("Error: User with this id not found.");
 
-                if (todoList == null) return NotFound("Todo List with this id not found");
+            TodoList todoList = _context.GetTodoListByListIdAndUserId(listId, userId);
 
-                _context.RemoveTodoList(todoList);
+            if (todoList == null)
+                return NotFound("Error: Todo List with this id not found.");
 
-                return Ok("Todo List has been deleted");
-            }
+            _context.RemoveTodoList(todoList);
 
-            return BadRequest();
+            return Ok("Todo List has been deleted.");
         }
 
+        /// <summary>
+        /// Method for set title of TodoList.
+        /// </summary>
+        /// <param name="listId">TodoList ID for delete</param>
+        /// <param name="title">New title for TodoList</param>
+        /// <returns></returns>
         [Authorize]
         [HttpPatch("setlisttitle")]
         public async Task<IActionResult> SetListTitle(int listId, string title)
         {
             if (ModelState.IsValid)
-            {
-                if (listId < 1)
-                    return BadRequest();
-                if (title == null || title.Length == 0)
-                    return BadRequest();
+                return BadRequest("Error: Model state is not valid.");
 
-                var userId = User.GetUserId();
+            if (listId < 1)
+                return BadRequest("Error: List id cannot be negative.");
 
-                User user = _context.GetUserById(userId);
+            if (title == null || title.Length == 0)
+                return BadRequest("Error: Title cannot be empty.");
 
-                if (user == null) return NotFound("User with this id not found");
+            var userId = User.GetUserId();
 
-                TodoList todoList = _context.GetTodoListByListIdAndUserId(listId, userId);
+            User user = _context.GetUserById(userId);
 
-                if (todoList == null) return NotFound("Todo List with this id not found");
+            if (user == null)
+                return NotFound("Error: User with this id not found.");
 
-                todoList.Title = title;
+            TodoList todoList = _context.GetTodoListByListIdAndUserId(listId, userId);
 
-                _context.UpdateTodoList(todoList);
+            if (todoList == null)
+                return NotFound("Error: Todo List with this id not found.");
 
-                return Ok(todoList);
-            }
+            todoList.Title = title;
 
-            return BadRequest();
+            _context.UpdateTodoList(todoList);
+
+            return Ok(todoList);
         }
 
+        /// <summary>
+        /// Method for get TaskList by id.
+        /// </summary>
+        /// <param name="listId">TodoList ID for get TodoList</param>
+        /// <returns></returns>
         [Authorize]
         [HttpGet("{listId}")]
         public async Task<IActionResult> GetTaskList(int listId)
         {
             if (ModelState.IsValid)
-            {
-                if (listId < 1)
-                    return BadRequest("Negative id is not valid");
+                return BadRequest("Error: Model state is not valid.");
 
-                var userId = User.GetUserId();
+            if (listId < 1)
+                return BadRequest("Error: List id cannot be negative.");
 
-                User user = _context.GetUserById(userId);
+            var userId = User.GetUserId();
 
-                if (user == null) return NotFound("User with this id not found");
+            User user = _context.GetUserById(userId);
 
-                TodoList todoList = _context.GetTodoListByListIdAndUserId(listId, userId);
+            if (user == null)
+                return NotFound("Error: User with this id not found.");
 
-                if (todoList == null) return NotFound("Todo List with this id not found");
+            TodoList todoList = _context.GetTodoListByListIdAndUserId(listId, userId);
 
-                return Ok(todoList);
-            }
+            if (todoList == null)
+                return NotFound("Errod: Todo List with this id not found.");
 
-            return BadRequest();
+            return Ok(todoList);
         }
 
+        /// <summary>
+        /// Method for get TaskLists for User
+        /// </summary>
+        /// <returns>List with TodoLists</returns>
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetListsForUser()
         {
             if (!ModelState.IsValid)
-            {
-                return BadRequest("Model state is not valid.");
-            }
+                return BadRequest("Error: Model state is not valid.");
 
             int userId = this.User.GetUserId();
             User user = _context.GetUserById(userId);
 
-            if (user == null) return NotFound("User with this id not found");
+            if (user == null)
+                return NotFound("Errod: User with this id not found.");
 
             List<TodoList> todoLists = _context.GetTodoListsByUserId(userId);
 

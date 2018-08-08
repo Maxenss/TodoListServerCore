@@ -23,30 +23,33 @@ namespace ToDoListServerCore.Controllers
             _context = context;
         }
 
-
-        // DELETE: api/Users/
+        /// <summary>
+        /// Method for delete user.
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         [HttpDelete]
         public async Task<IActionResult> DeleteUser()
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
             int userId = User.GetUserId();
 
             var user = _context.GetUserById(userId);
             if (user == null)
-            {
                 return NotFound();
-            }
 
             _context.RemoveUser(user);
 
             return Ok(user);
         }
 
+        /// <summary>
+        /// Method for get user.
+        /// </summary>
+        /// <param name="id">User id.</param>
+        /// <returns></returns>
         [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(int id) {

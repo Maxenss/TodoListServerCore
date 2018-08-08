@@ -137,6 +137,11 @@ namespace ToDoListServerCore.Controllers
             return Ok(userDTO);
         }
 
+        /// <summary>
+        /// Method for validation Email.
+        /// </summary>
+        /// <param name="email">Email in string representation.</param>
+        /// <returns></returns>
         private bool IsValidEmail(string email)
         {
             try
