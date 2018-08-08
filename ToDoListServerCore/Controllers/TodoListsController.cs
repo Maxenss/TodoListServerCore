@@ -18,47 +18,49 @@ namespace ToDoListServerCore.Controllers
     [Route("api/TodoLists")]
     public class TodoListsController : Controller
     {
-        DBContext _context;
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IRepository _context;
 
 
-        public TodoListsController(DBContext context, IHostingEnvironment hostingEnvironment)
+        public TodoListsController(IRepository context)
         {
             _context = context;
-            _hostingEnvironment = hostingEnvironment;
         }
 
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateList([FromBody] CreateListDTO createListDTO)
         {
-            if (ModelState.IsValid)
-            {
-                string title = createListDTO.Title;
+            if (!ModelState.IsValid)
+                return BadRequest("Model state is not valid.");
 
-                if (title == null || title.Length == 0) return BadRequest("Title cannot to be empty");
+            if (createListDTO == null ||
+                createListDTO.Title == String.Empty)
+                return BadRequest("Title is empty");
 
-                var userId = this.User.GetUserId();
+            string title = createListDTO.Title;
 
-                User user = _context.GetUserById(userId); 
+            if (title == null || title.Length == 0) return BadRequest("Title cannot to be empty");
 
-                if (user == null) return NotFound();
+            var userId = this.User.GetUserId();
 
-                TodoList existToDoList = _context.GetTodoListByTitleAndUserId(title, userId);
+            User user = _context.GetUserById(userId);
 
-                if (existToDoList != null)
-                    return BadRequest("This Todo List already exist");
+            if (user == null) return NotFound();
 
-                TodoList todoList = new TodoList(userId, title);
-                _context.AddTodoList(todoList);
+            TodoList existToDoList = _context.GetTodoListByTitleAndUserId(title, userId);
 
-                string webRootPath = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
-                string objectLocation = webRootPath + "/" + "api/TodoLists/" + todoList.Id.ToString();
+            if (existToDoList != null)
+                return BadRequest("This Todo List already exist");
 
-                return Created(objectLocation, todoList);
-            }
+            TodoList todoList = new TodoList(userId, title);
+            _context.AddTodoList(todoList);
 
-            return BadRequest();
+            if (Extensions.Extensions.IsUnitTest)
+                return Created("localhost", todoList);
+
+            string webRootPath = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
+            string objectLocation = webRootPath + "/" + "api/users/" + todoList.Id.ToString();
+            return Created(objectLocation, todoList);
         }
 
         [Authorize]
@@ -126,11 +128,11 @@ namespace ToDoListServerCore.Controllers
             if (ModelState.IsValid)
             {
                 if (listId < 1)
-                    return BadRequest();
+                    return BadRequest("Negative id is not valid");
 
                 var userId = User.GetUserId();
 
-                User user = _context.Users.SingleOrDefault(u => u.Id == userId);
+                User user = _context.GetUserById(userId);
 
                 if (user == null) return NotFound("User with this id not found");
 

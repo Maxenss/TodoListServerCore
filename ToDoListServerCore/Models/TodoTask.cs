@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using ToDoListServerCore.Models.DTO;
 
 namespace ToDoListServerCore.Models
 {
@@ -38,6 +39,12 @@ namespace ToDoListServerCore.Models
             ToDoListId = toDoListId;
             Title = title;
             Description = description;
+        }
+
+        public TodoTask(CreateToDoTaskDTO createToDoTaskDTO) {
+            ToDoListId = createToDoTaskDTO.ToDoListId;
+            Title = createToDoTaskDTO.Title;
+            Description = createToDoTaskDTO.Description;
         }
     }
 }

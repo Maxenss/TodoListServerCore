@@ -85,7 +85,7 @@ namespace ToDoListServerCore.Tests
             // Arrange
             var signUpDTO = new SignUpDTO
             {
-                Email = "test320@gmail.com",
+                Email = "test3200@gmail.com",
                 Password = "123456",
                 Name = "User123"
             };
@@ -106,11 +106,10 @@ namespace ToDoListServerCore.Tests
 
         private async Task<UserDTO> SignInPost()
         {
-            #region Sign In
             // Arrange
             var signInDto = new SignInDTO
             {
-                Email = "test320@gmail.com",
+                Email = "test3200@gmail.com",
                 Password = "123456"
             };
             var content = JsonConvert.SerializeObject(signInDto);
@@ -125,7 +124,6 @@ namespace ToDoListServerCore.Tests
             Assert.NotNull(userDto);
 
             return userDto;
-            #endregion
         }
 
         private async Task<TodoList> CreateToDoList(string title)

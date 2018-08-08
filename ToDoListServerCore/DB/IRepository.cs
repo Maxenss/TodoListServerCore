@@ -21,6 +21,7 @@ namespace ToDoListServerCore.DB
         List<TodoList> GetTodoListsByUserId(int userId);
 
         TodoTask GetTodoTaskById(int id);
+        TodoTask GetTodoTaskByIdAndUserId(int taskId, int userId);
 
         void AddUser(User user);
         void RemoveUser(User user);

@@ -23,54 +23,96 @@ namespace ToDoListServerCore.Controllers
         private readonly IRepository _context;
         private readonly IConfiguration _configuration;
 
-        public AccountController(DBContext context, IHostingEnvironment env)
+        public AccountController(IRepository context)
         {
             _context = context;
 
             // Set up configuration sources.
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json")
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+            IConfigurationBuilder builder = new ConfigurationBuilder()
+                                    .AddJsonFile("appsettings.json");
 
             builder.AddEnvironmentVariables();
             _configuration = builder.Build();
         }
 
-        // signup
+        /// <summary>
+        /// Method for Sign Up.
+        /// </summary>
+        /// <param name="signUpDTO">DTO with data for sign up.</param>
+        /// <returns></returns>
         [HttpPost("signup")]
         public async Task<IActionResult> SignUp([FromBody] SignUpDTO signUpDTO)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest("Model state is not valid.");
-            }
 
-            User existUser = _context.GetUsers().SingleOrDefault(u => u.Email == signUpDTO.Email);
+            // Email validation
+            if (signUpDTO.Email == null || signUpDTO.Email == String.Empty) 
+                return BadRequest("Error: Empty Email.");
 
-            if (existUser != null) { return BadRequest("User with this email already exist."); }
+            if (!IsValidEmail(signUpDTO.Email))
+                return BadRequest("Error: Email is not valid.");
+
+            // Password validatition
+            if (signUpDTO.Password == null || signUpDTO.Password == String.Empty)
+                return BadRequest("Error: Empty Password");
+            if (signUpDTO.Password.Length < 6)
+                return BadRequest("Error: Short Password");
+
+            // Name validation
+            if (signUpDTO.Name == null || signUpDTO.Name == String.Empty)
+                return BadRequest("Error: Empty Name");
+
+            User existUser = _context.GetUserByEmail(signUpDTO.Email);
+
+            if (existUser != null)
+                return BadRequest("User with this email already exist.");
 
             User user = new User(signUpDTO.Name, signUpDTO.Email, signUpDTO.Password);
+            user.TodoLists = new List<Models.TodoList>();
 
             _context.AddUser(user);
 
-            return Created("User Created", user);
+            if (Extensions.Extensions.IsUnitTest)
+               return Created("localhost", user);
+
+            // Get URL patch of object
+            string webRootPath = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
+            string objectLocation = webRootPath + "/" + "api/TodoLists/" + user.Id.ToString();
+
+            return Created(objectLocation, user);
         }
 
-        // signin
+        /// <summary>
+        /// Method for Sign In.
+        /// </summary>
+        /// <param name="signInDTO">DTO with data for sign in.</param>
+        /// <returns></returns>
         [HttpPost("signin")]
         public async Task<IActionResult> SignIn([FromBody] SignInDTO signInDTO)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || signInDTO == null)
             {
                 return BadRequest("Model state is not valid.");
             }
+
+            // Email validation
+            if (signInDTO.Email == null || signInDTO.Email == String.Empty)
+                return BadRequest("Error: Empty Email.");
+
+            if (!IsValidEmail(signInDTO.Email))
+                return BadRequest("Error: Email is not valid.");
+
+            // Password validatition
+            if (signInDTO.Password == null || signInDTO.Password == String.Empty)
+                return BadRequest("Error: Empty Password.");
 
             User user = _context.GetUserByEmailAndPassword(signInDTO.Email, signInDTO.Password);
 
             if (user == null)
-                return NotFound("Not correct email or password.");
+                return NotFound("Error: Not correct email or password.");
 
+            // Create claims with data 
             var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
@@ -93,6 +135,20 @@ namespace ToDoListServerCore.Controllers
             UserDTO userDTO = new UserDTO(resToken, DateTime.Now.AddHours(24), DateTime.Now, user);
 
             return Ok(userDTO);
+        }
+
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                System.Net.Mail.MailAddress addr 
+                    = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

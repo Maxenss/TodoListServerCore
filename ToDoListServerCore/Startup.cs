@@ -42,6 +42,8 @@ namespace ToDoListServerCore
             services.AddDbContext<DBContext>(options =>
                   options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddScoped<IRepository, DBContext>();
+
             #region Include JwtBearer to server
             services.AddAuthentication(options =>
             {

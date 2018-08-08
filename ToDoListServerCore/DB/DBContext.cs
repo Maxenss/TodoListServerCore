@@ -38,12 +38,14 @@ namespace ToDoListServerCore.DB
 
         public User GetUserByEmail(string email)
         {
-            return this.Users.SingleOrDefault(u => u.Email == email);
+            return this.Users.Include(t => t.TodoLists)
+                .SingleOrDefault(u => u.Email == email);
         }
 
         public User GetUserById(int id)
         {
-            return this.Users.Include(t => t.TodoLists).SingleOrDefault(u => u.Id == id);
+            return this.Users.Include(t => t.TodoLists)
+                .SingleOrDefault(u => u.Id == id);
         }
 
         public User GetUserByEmailAndPassword(string email, string password)
@@ -76,6 +78,10 @@ namespace ToDoListServerCore.DB
         public TodoTask GetTodoTaskById(int id)
         {
             return TodoTasks.SingleOrDefault(t => t.Id == id);
+        }
+
+        public TodoTask GetTodoTaskByIdAndUserId(int taskId, int userId) {
+            return TodoTasks.SingleOrDefault(t => t.Id == taskId);
         }
 
         public void AddUser(User user)
