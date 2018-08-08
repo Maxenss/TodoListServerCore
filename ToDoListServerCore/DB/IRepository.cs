@@ -13,8 +13,8 @@ namespace ToDoListServerCore.DB
         IEnumerable<TodoList> GetToDoLists();
 
         User GetUserById(int id);
-        User GetUserByEmail(string email);
-        User GetUserByEmailAndPassword(string email, string password);
+         User GetUserByEmail(string email);
+         User GetUserByEmailAndPassword(string email, string password);
 
         TodoList GetTodoListByTitleAndUserId(string title, int userId);
         TodoList GetTodoListByListIdAndUserId(int listId, int userId);

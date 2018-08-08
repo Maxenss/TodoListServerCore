@@ -63,7 +63,7 @@ namespace ToDoListServerCore.Controllers
             if (signUpDTO.Name == null || signUpDTO.Name == String.Empty)
                 return BadRequest("Error: Empty Name");
 
-            User existUser = _context.GetUserByEmail(signUpDTO.Email);
+            User existUser =  _context.GetUserByEmail(signUpDTO.Email);
 
             if (existUser != null)
                 return BadRequest("User with this email already exist.");

@@ -42,7 +42,7 @@ namespace ToDoListServerCore.Controllers
 
             _context.RemoveUser(user);
 
-            return Ok(user);
+            return Ok("User has been deleted.");
         }
 
         /// <summary>

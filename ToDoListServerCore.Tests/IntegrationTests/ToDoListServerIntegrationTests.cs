@@ -75,6 +75,8 @@ namespace ToDoListServerCore.Tests
 
             // Set List Title Test
             await SetListTitle(todoList.Id, "Updated Title");
+
+            await DeleteUser();
         }
 
         private async Task<User> SignUpPost()
@@ -82,7 +84,7 @@ namespace ToDoListServerCore.Tests
             // Arrange
             var signUpDTO = new SignUpDTO
             {
-                Email = "test3200@gmail.com",
+                Email = "test2@gmail.com",
                 Password = "123456",
                 Name = "User123"
             };
@@ -106,7 +108,7 @@ namespace ToDoListServerCore.Tests
             // Arrange
             var signInDto = new SignInDTO
             {
-                Email = "test3200@gmail.com",
+                Email = "test2@gmail.com",
                 Password = "123456"
             };
             var content = JsonConvert.SerializeObject(signInDto);

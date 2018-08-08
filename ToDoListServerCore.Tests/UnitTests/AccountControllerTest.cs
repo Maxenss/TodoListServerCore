@@ -22,6 +22,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         [Fact]
         public void SignUpTest_ReturnEmailExist()
         {
+            #region Arrange
             SignUpDTO signUpDTO = new SignUpDTO {
                 Email = "Email1",
                 Password = "Pass1",
@@ -30,21 +31,24 @@ namespace ToDoListServerCore.Tests.UnitTests
 
             User user = new User(1, "Name1", "Email1", "Pass1");
 
-
             model = new Mock<IRepository>();
             model.Setup(repo => repo.GetUsers()).Returns(GetTestUsers());
-            model.Setup(repo => repo.GetUserByEmail("Email1")).Returns(user);
+            model.Setup(repo => repo.GetUserByEmail("Email1")).Returns( user);
 
             controller = new AccountController(model.Object);
+            #endregion
 
+            // Act
             var result = controller.SignUp(signUpDTO);
 
+            // Assert
             Assert.IsType<BadRequestObjectResult>(result.Result);
         }
 
         [Fact]
         public void SignUpTest_ReturnRegisterCorrect()
         {
+            #region Arrange
             SignUpDTO signUpDTO = new SignUpDTO
             {
                 Email = "test@gmail.com",
@@ -63,18 +67,19 @@ namespace ToDoListServerCore.Tests.UnitTests
             model.Setup(repo => repo.AddUser(user));
 
             controller = new AccountController(model.Object);
+            #endregion
 
+            // Act
             var result = controller.SignUp(signUpDTO);
 
-            //Assert.IsType<CreatedResult>(result.Result);
+            // Assert
             var actionResult = Assert.IsType<CreatedResult>(result.Result);
-          //  Assert.Equal(user, actionResult.Value);
-
         }
 
         [Fact]
         public void SignUpTest_SendEmptyFields()
         {
+            #region Arrange
             SignUpDTO signUpDTO = new SignUpDTO
             {
                 Email = "",
@@ -84,21 +89,24 @@ namespace ToDoListServerCore.Tests.UnitTests
 
             User user = new User(1, "Name1", "Email1", "Pass1");
 
-
             model = new Mock<IRepository>();
             model.Setup(repo => repo.GetUsers()).Returns(GetTestUsers());
             model.Setup(repo => repo.GetUserByEmail("Email1")).Returns(user);
 
             controller = new AccountController(model.Object);
+            #endregion
 
+            // Act
             var result = controller.SignUp(signUpDTO);
 
+            // Assert
             Assert.IsType<BadRequestObjectResult>(result.Result);
         }
 
         [Fact]
         public void SignUpTest_SendNullFields()
         {
+            #region Arrange
             SignUpDTO signUpDTO = new SignUpDTO
             {
                 Email = null,
@@ -108,21 +116,24 @@ namespace ToDoListServerCore.Tests.UnitTests
 
             User user = new User(1, "Name1", "Email1", "Pass1");
 
-
             model = new Mock<IRepository>();
             model.Setup(repo => repo.GetUsers()).Returns(GetTestUsers());
             model.Setup(repo => repo.GetUserByEmail("Email1")).Returns(user);
 
             controller = new AccountController(model.Object);
+            #endregion
 
+            // Act
             var result = controller.SignUp(signUpDTO);
 
+            // Assert
             Assert.IsType<BadRequestObjectResult>(result.Result);
         }
 
         [Fact]
         public void SignUpTest_SendIncorrectEmail()
         {
+            #region Arrange
             SignUpDTO signUpDTO = new SignUpDTO
             {
                 Email = "vasvsagas",
@@ -132,21 +143,24 @@ namespace ToDoListServerCore.Tests.UnitTests
 
             User user = new User(1, "Name1", "Email1", "Pass1");
 
-
             model = new Mock<IRepository>();
             model.Setup(repo => repo.GetUsers()).Returns(GetTestUsers());
             model.Setup(repo => repo.GetUserByEmail("Email1")).Returns(user);
 
             controller = new AccountController(model.Object);
+            #endregion
 
+            // Act
             var result = controller.SignUp(signUpDTO);
 
+            // Assert
             Assert.IsType<BadRequestObjectResult>(result.Result);
         }
 
         [Fact]
         public void SignUpTest_SendShortPasswordFields()
         {
+            #region Arrange
             SignUpDTO signUpDTO = new SignUpDTO
             {
                 Email = "test@gmail.com",
@@ -156,20 +170,23 @@ namespace ToDoListServerCore.Tests.UnitTests
 
             User user = new User(1, "Name1", "Email1", "Pass1");
 
-
             model = new Mock<IRepository>();
             model.Setup(repo => repo.GetUsers()).Returns(GetTestUsers());
             model.Setup(repo => repo.GetUserByEmail("Email1")).Returns(user);
 
             controller = new AccountController(model.Object);
+            #endregion
 
+            // Act
             var result = controller.SignUp(signUpDTO);
 
+            // Assert
             Assert.IsType<BadRequestObjectResult>(result.Result);
         }
 
         [Fact]
         public void SignInTest_ReturnUserNotFound() {
+            #region Arrange
             SignInDTO signInDTO = new SignInDTO
             {
                 Email = "test@gmail.com",
@@ -183,15 +200,19 @@ namespace ToDoListServerCore.Tests.UnitTests
                 signInDTO.Email, signInDTO.Password)).Returns(user);
 
             controller = new AccountController(model.Object);
+            #endregion
 
+            // Act
             var result = controller.SignIn(signInDTO);
 
+            // Assert
             Assert.IsType<NotFoundObjectResult>(result.Result);
         }
 
         [Fact]
         public void SignInTest_ReturnAuthCorrect()
         {
+            #region Arrange
             SignInDTO signInDTO = new SignInDTO
             {
                 Email = "test@gmail.com",
@@ -205,23 +226,30 @@ namespace ToDoListServerCore.Tests.UnitTests
                 signInDTO.Email, signInDTO.Password)).Returns(user);
 
             controller = new AccountController(model.Object);
+            #endregion
 
+            // Act
             var result = controller.SignIn(signInDTO);
 
+            // Assert
             Assert.IsType<OkObjectResult>(result.Result);
         }
 
         [Fact]
         public void SignInTest_ReturnModelStateIsNotValid()
         {
+            #region Arrange
             SignInDTO signInDTO = null;
 
             model = new Mock<IRepository>();
 
             controller = new AccountController(model.Object);
+            #endregion
 
+            // Act
             var result = controller.SignIn(signInDTO);
 
+            // Assert
             Assert.IsType<BadRequestObjectResult>(result.Result);
         }
 

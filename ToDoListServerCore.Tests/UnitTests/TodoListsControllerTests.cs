@@ -21,6 +21,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         [Fact]
         public void CreateList_ReturnCreatedToDoList() {
 
+            #region Arrange
             CreateListDTO createListDTO = new CreateListDTO
             {
                 Title = "Title1"
@@ -38,7 +39,6 @@ namespace ToDoListServerCore.Tests.UnitTests
             User user = new User(1, "Name1", "Email1", "Pass1");
             Extensions.Extensions.IsUnitTest = true;
 
-
             model = new Mock<IRepository>();
             model.Setup(repo => repo.GetToDoLists()).Returns(GetTodoListsTest());
             model.Setup(repo => repo.GetTodoListByTitleAndUserId(
@@ -47,17 +47,19 @@ namespace ToDoListServerCore.Tests.UnitTests
             model.Setup(repo => repo.GetUserById(user.Id)).Returns(user);
 
             controller = new TodoListsController(model.Object);
+            #endregion
 
+            // Act
             var result = controller.CreateList(createListDTO);
 
+            // Assert
             Assert.IsType<CreatedResult>(result.Result);
-           // var actionResult = Assert.IsType<CreatedResult>(result.Result);
-            //  Assert.Equal(user, actionResult.Value);
         }
 
         [Fact]
         public void CreateList_EmptyTitleReturnBadRequest ()
         {
+            #region Arrange 
             CreateListDTO createListDTO = new CreateListDTO
             {
                 Title = ""
@@ -75,18 +77,21 @@ namespace ToDoListServerCore.Tests.UnitTests
             User user = new User(1, "Name1", "Email1", "Pass1");
             Extensions.Extensions.IsUnitTest = true;
 
-
             model = new Mock<IRepository>();
 
             controller = new TodoListsController(model.Object);
+            #endregion
 
+            // Act
             var result = controller.CreateList(createListDTO);
 
+            // Assert
             Assert.IsType<BadRequestObjectResult>(result.Result);
         }
 
         [Fact]
         public void CreateList_ReturnExistToDoList() {
+            #region Arrange
             CreateListDTO createListDTO = new CreateListDTO
             {
                 Title = "List1"
@@ -102,24 +107,26 @@ namespace ToDoListServerCore.Tests.UnitTests
             User user = new User(1, "Name1", "Email1", "Pass1");
             Extensions.Extensions.IsUnitTest = true;
 
-
             model = new Mock<IRepository>();
             model.Setup(repo => repo.GetToDoLists()).Returns(GetTodoListsTest());
             model.Setup(repo => repo.GetTodoListByTitleAndUserId(
                 createListDTO.Title, user.Id)).Returns(existTodoList);
-          //  model.Setup(repo => repo.AddTodoList(newTodoList));
             model.Setup(repo => repo.GetUserById(user.Id)).Returns(user);
 
             controller = new TodoListsController(model.Object);
+            #endregion
 
+            // Act
             var result = controller.CreateList(createListDTO);
 
+            // Assert
             Assert.IsType<BadRequestObjectResult>(result.Result);
         }
 
         [Fact]
         public void SetListTitle_ReturnCorrect()
         {
+            #region Arrange
             User user = new User(1, "Name1", "Email1", "Pass1");
             TodoList todoList = new TodoList
             {
@@ -140,7 +147,9 @@ namespace ToDoListServerCore.Tests.UnitTests
             model.Setup(repo => repo.UpdateTodoList(todoList));
 
             controller = new TodoListsController(model.Object);
+            #endregion
 
+            // Act
             var result = controller.SetListTitle(listId, title);
 
             // Assert
@@ -151,6 +160,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         [Fact]
         public void SetListTitle_ReturnNotFound()
         {
+            #region Arrange
             User user = new User(1, "Name1", "Email1", "Pass1");
             TodoList nullTodoList = null;
 
@@ -165,7 +175,9 @@ namespace ToDoListServerCore.Tests.UnitTests
                 listId, user.Id)).Returns(nullTodoList);
 
             controller = new TodoListsController(model.Object);
+            #endregion
 
+            // Act
             var result = controller.SetListTitle(listId, title);
 
             // Assert
@@ -175,6 +187,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         [Fact]
         public void SetListTitle_NegativeIdBadRequest()
         {
+            #region Arrange
             int listId = -1;
             string title = "UpdatedTitle";
 
@@ -183,15 +196,19 @@ namespace ToDoListServerCore.Tests.UnitTests
             model = new Mock<IRepository>();
 
             controller = new TodoListsController(model.Object);
+            #endregion
 
+            // Act
             var result = controller.SetListTitle(listId, title);
 
-            Assert.IsType<BadRequestResult>(result.Result);
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(result.Result);
         }
 
         [Fact]
         public void SetListTitle_EmptyTitleReturnBadRequest()
         {
+            #region Arrange
             int listId = 1;
             string title = "";
 
@@ -200,15 +217,19 @@ namespace ToDoListServerCore.Tests.UnitTests
             model = new Mock<IRepository>();
 
             controller = new TodoListsController(model.Object);
+            #endregion
 
+            // Act
             var result = controller.SetListTitle(listId, title);
 
-            Assert.IsType<BadRequestResult>(result.Result);
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(result.Result);
         }
 
         [Fact]
         public void SetListTitle_NullTitleReturnBadRequest()
         {
+            #region Arrange
             int listId = 1;
             string title = "";
 
@@ -217,16 +238,19 @@ namespace ToDoListServerCore.Tests.UnitTests
             model = new Mock<IRepository>();
 
             controller = new TodoListsController(model.Object);
+            #endregion
 
+            // Act
             var result = controller.SetListTitle(listId, title);
 
-            Assert.IsType<BadRequestResult>(result.Result);
+            // Assert
+            Assert.IsType<BadRequestObjectResult>(result.Result);
         }
 
         [Fact]
         public void GetListsForUser_CorrectReturnLists()
         {
-            // Arrange
+            #region Arrange
             User user = new User(1, "Name1", "Email1", "Pass1");
 
             Extensions.Extensions.IsUnitTest = true;
@@ -235,6 +259,7 @@ namespace ToDoListServerCore.Tests.UnitTests
             model.Setup(repo => repo.GetUserById(user.Id)).Returns(user);
             model.Setup(repo => repo.GetTodoListsByUserId(user.Id))
                 .Returns(GetTodoListsTest());
+            #endregion
 
             // Act
             controller = new TodoListsController(model.Object);
@@ -266,7 +291,7 @@ namespace ToDoListServerCore.Tests.UnitTests
 
         [Fact]
         public void DeleteList_ReturnCorrectDeleted() {
-            // Arrange
+            #region Arrange
             User user = new User(1, "Name1", "Email1", "Pass1");
             TodoList todoList = new TodoList
             {
@@ -282,6 +307,7 @@ namespace ToDoListServerCore.Tests.UnitTests
             model.Setup(repo => repo.GetTodoListByListIdAndUserId(todoList.Id , user.Id))
                 .Returns(todoList);
             model.Setup(repo => repo.RemoveTodoList(todoList));
+            #endregion
 
             // Act
             controller = new TodoListsController(model.Object);
@@ -294,7 +320,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         [Fact]
         public void DeleteList_ReturnNotFoundList()
         {
-            // Arrange
+            #region Arrange
             User user = new User(1, "Name1", "Email1", "Pass1");
             TodoList todoList = null;
             int todoListID = 2;
@@ -305,6 +331,7 @@ namespace ToDoListServerCore.Tests.UnitTests
             model.Setup(repo => repo.GetUserById(user.Id)).Returns(user);
             model.Setup(repo => repo.GetTodoListByListIdAndUserId(todoListID, user.Id))
                 .Returns(todoList);
+            #endregion
 
             // Act
             controller = new TodoListsController(model.Object);
@@ -317,7 +344,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         [Fact]
         public void DeleteList_ReturnNotFoundUser()
         {
-            // Arrange
+            #region Arrange
             User user = null;
             TodoList todoList = new TodoList
             {
@@ -333,6 +360,7 @@ namespace ToDoListServerCore.Tests.UnitTests
             model.Setup(repo => repo.GetUserById(userId)).Returns(user);
             model.Setup(repo => repo.GetTodoListByListIdAndUserId(todoList.Id, userId))
                 .Returns(todoList);
+            #endregion
 
             // Act
             controller = new TodoListsController(model.Object);
@@ -345,7 +373,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         [Fact]
         public void GetTaskList_ReturnCorrectModel()
         {
-            // Arrange
+            #region Arrange
             User user = new User(1, "Name1", "Email1", "Pass1");
             TodoList todoList = new TodoList
             {
@@ -360,6 +388,7 @@ namespace ToDoListServerCore.Tests.UnitTests
             model.Setup(repo => repo.GetUserById(user.Id)).Returns(user);
             model.Setup(repo => repo.GetTodoListByListIdAndUserId(todoList.Id, user.Id))
                 .Returns(todoList);
+            #endregion
 
             // Act
             controller = new TodoListsController(model.Object);
@@ -372,7 +401,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         [Fact]
         public void GetTaskList_ReturnNotFoundList()
         {
-            // Arrange
+            #region Arrange
             User user = new User(1, "Name1", "Email1", "Pass1");
             TodoList todoList = null;
             int listID = 2;
@@ -383,6 +412,7 @@ namespace ToDoListServerCore.Tests.UnitTests
             model.Setup(repo => repo.GetUserById(user.Id)).Returns(user);
             model.Setup(repo => repo.GetTodoListByListIdAndUserId(listID, user.Id))
                 .Returns(todoList);
+            #endregion
 
             // Act
             controller = new TodoListsController(model.Object);
@@ -395,7 +425,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         [Fact]
         public void GetTaskList_ReturnNotFoundUser()
         {
-            // Arrange
+            #region Arrange
             User user = null;
             TodoList todoList = new TodoList
             {
@@ -409,6 +439,7 @@ namespace ToDoListServerCore.Tests.UnitTests
 
             model = new Mock<IRepository>();
             model.Setup(repo => repo.GetUserById(userId)).Returns(user);
+            #endregion
 
             // Act
             controller = new TodoListsController(model.Object);

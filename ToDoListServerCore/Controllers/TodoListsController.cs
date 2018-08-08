@@ -111,7 +111,7 @@ namespace ToDoListServerCore.Controllers
         [HttpPatch("setlisttitle")]
         public async Task<IActionResult> SetListTitle(int listId, string title)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return BadRequest("Error: Model state is not valid.");
 
             if (listId < 1)
@@ -148,7 +148,7 @@ namespace ToDoListServerCore.Controllers
         [HttpGet("{listId}")]
         public async Task<IActionResult> GetTaskList(int listId)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return BadRequest("Error: Model state is not valid.");
 
             if (listId < 1)
