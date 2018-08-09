@@ -56,7 +56,7 @@ namespace ToDoListServerCore.Controllers
             TodoList existToDoList = _context.GetTodoListByTitleAndUserId(title, userId);
 
             if (existToDoList != null)
-                return BadRequest("Errod: This Todo List already exist.");
+                return BadRequest("Error: This Todo List already exist.");
 
             TodoList todoList = new TodoList(userId, title);
             _context.AddTodoList(todoList);
@@ -164,7 +164,7 @@ namespace ToDoListServerCore.Controllers
             TodoList todoList = _context.GetTodoListByListIdAndUserId(listId, userId);
 
             if (todoList == null)
-                return NotFound("Errod: Todo List with this id not found.");
+                return NotFound("Error: Todo List with this id not found.");
 
             return Ok(todoList);
         }

@@ -217,4 +217,276 @@
 
   * **Code:** 404 Not Found <br />
     **Content:** `Error: User not found.`
+
+**Create Todo List**
+----
+  Post method for add new Todo List on server.
+
+* **URL**
+
+   api/todolists/
+
+* **Method:**
   
+  `POST`
+  
+*  **URL Params**
+
+   Method not have url params.
+
+* **Headers Params**
+
+   Content-Type: application/json
+   Authorization: Bearer :token
+
+* **Data Params**
+
+   application/json
+
+* **Success Response:**
+
+  * **Code:** 201 Created<br />
+    **Content:** `{
+    "id": 7110,
+    "userId": 2090,
+    "title": "List7",
+    "tasks": []
+}`
+ 
+* **Error Response:**
+
+  * **Code:** 400 Bad Request <br />
+    **Content:** `Model state is not valid.`
+
+  OR
+
+  * **Code:** 400 Bad Request <br />
+    **Content:** `Error: Title is empty.`
+    
+  OR
+
+  * **Code:** 400 Bad Request <br />
+    **Content:** `Error: Title cannot to be empty.`
+        
+  OR
+
+  * **Code:** 404 Not Found <br />
+    **Content:** `Error: User not found.`
+            
+  OR
+
+  * **Code:** 400 Bad Request <br />
+    **Content:** `Error: This Todo List already exist.`
+
+* **Request JSON Example:**
+
+  `{
+	"title":"New List TItle"
+   }`
+
+**Get Todo List**
+----
+  Get method for get json with Todo List.
+
+* **URL**
+
+   api/todolists/:listId
+
+* **Method:**
+  
+  `GET`
+  
+*  **URL Params**
+
+   ListId - ID of Todo List
+
+* **Headers Params**
+
+   Content-Type: application/json
+   Authorization: Bearer :token
+
+* **Data Params**
+
+   application/json
+
+* **Success Response:**
+
+  * **Code:** 200 Ok<br />
+    **Content:** `{
+    "id": 7110,
+    "userId": 2090,
+    "title": "List7",
+    "tasks": []
+}`
+ 
+* **Error Response:**
+
+  * **Code:** 400 Bad Request <br />
+    **Content:** `Model state is not valid.`
+
+  OR
+
+  * **Code:** 400 Bad Request <br />
+    **Content:** `Error: List id cannot be negative.`
+    
+  OR
+
+  * **Code:** 404 Not Found <br />
+    **Content:** `Error: User with this id not found.`
+            
+  OR
+
+  * **Code:** 404 Not Found <br />
+    **Content:** `Error: Todo List with this id not found.`
+  
+
+**Get Todo Lists for user**
+----
+  Get method for get all todo lists in json for user.
+
+* **URL**
+
+   api/todolists/
+
+* **Method:**
+  
+  `GET`
+
+* **Headers Params**
+
+   Content-Type: application/json
+   Authorization: Bearer :token
+
+* **Data Params**
+
+   application/json
+
+* **Success Response:**
+
+  * **Code:** 200 Ok<br />
+    **Content:** `[
+    {
+        "id": 2,
+        "userId": 2,
+        "title": "List1",
+        "tasks": []
+    },
+    {
+        "id": 1002,
+        "userId": 2,
+        "title": "List2",
+        "tasks": []
+    }
+]`
+ 
+* **Error Response:**
+
+  * **Code:** 400 Bad Request <br />
+    **Content:** `Error: Model state is not valid.`
+
+  OR
+
+  * **Code:** 404 Not Found <br />
+    **Content:** `Error: User with this id not found.`
+
+**Set Todo List Title**
+----
+  Patch method for set list's title.
+
+* **URL**
+
+   api/todolists/setlisttitle?listid=:listid&title=:title
+
+* **Method:**
+  
+  `PATCH`
+
+  *  **URL Params**
+
+   - listId - ID of Todo List
+   - title - new title for Todo List
+
+* **Headers Params**
+
+   Authorization: Bearer :token
+
+* **Success Response:**
+
+  * **Code:** 200 Ok<br />
+    **Content:** `
+    {
+        "id": 2,
+        "userId": 2,
+        "title": "List1",
+        "tasks": []
+    }`
+ 
+* **Error Response:**
+
+  * **Code:** 400 Bad Request <br />
+    **Content:** `Error: Model state is not valid.`
+
+  OR
+
+  * **Code:** 400 Bad Request <br />
+    **Content:** `Error: List id cannot be negative.`
+    
+  OR
+
+  * **Code:** 400 Bad Request <br />
+    **Content:** `Error: Title cannot be empty.`
+    
+  OR
+
+  * **Code:** 404 Not Found <br />
+    **Content:** `Error: User with this id not found.`
+        
+  OR
+
+  * **Code:** 404 Not Found <br />
+    **Content:** `Error: Todo List with this id not found.`
+
+**Delete Todo List**
+----
+  Delete method for delete Todo List from server.
+
+* **URL**
+
+   api/todolists/:listId
+
+* **Method:**
+  
+  `Delete`
+
+  *  **URL Params**
+
+   - listId - ID of Todo List
+
+* **Headers Params**
+
+   - Authorization: Bearer :token
+
+* **Success Response:**
+
+  * **Code:** 200 Ok<br />
+    **Content:** `Todo List has been deleted.`
+ 
+* **Error Response:**
+
+  * **Code:** 400 Bad Request <br />
+    **Content:** `Error: Model state is not valid.`
+
+  OR
+
+  * **Code:** 400 Bad Request <br />
+    **Content:** `Error: List id cannot be negative.`
+  
+  OR
+
+  * **Code:** 404 Not Found <br />
+    **Content:** `Error: User with this id not found.`
+        
+  OR
+
+  * **Code:** 404 Not Found <br />
+    **Content:** `Error: Todo List with this id not found.`
