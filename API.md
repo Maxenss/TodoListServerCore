@@ -456,11 +456,11 @@
 
 * **Method:**
   
-  `Delete`
+  `DELETE`
 
   *  **URL Params**
 
-   - listId - ID of Todo List
+   listId - ID of Todo List
 
 * **Headers Params**
 
@@ -490,3 +490,241 @@
 
   * **Code:** 404 Not Found <br />
     **Content:** `Error: Todo List with this id not found.`
+
+**Create Todo Task**
+----
+  Post method for add new Todo Task on server.
+
+* **URL**
+
+   api/todotasks/
+
+* **Method:**
+  
+  `POST`
+  
+*  **URL Params**
+
+   Method not have url params.
+
+* **Headers Params**
+
+   Content-Type: application/json
+   Authorization: Bearer :token
+
+* **Data Params**
+
+   application/json
+
+* **Success Response:**
+
+  * **Code:** 201 Created<br />
+    **Content:** `{
+    "id": 2155,
+    "toDoListId": 7110,
+    "title": "Task2",
+    "description": "Need to clear space on windows",
+    "taskStatus": "AWAIT"
+}`
+ 
+* **Error Response:**
+
+  * **Code:** 400 Bad Request <br />
+    **Content:** `Model state is not valid.`
+
+  OR
+
+  * **Code:** 400 Bad Request <br />
+    **Content:** `Error: Todo list id cannot be negative.`
+    
+  OR
+
+  * **Code:** 400 Bad Request <br />
+    **Content:** `Error: Todo task title cannot be empty.`
+        
+  OR
+
+  * **Code:** 400 Not Found <br />
+    **Content:** `Error: Todo task description cannot be empty.`
+            
+  OR
+
+  * **Code:** 404 Not Found <br />
+    **Content:** `Error: User with this id not found.`
+
+* **Request JSON Example:**
+
+  `{
+	"ToDoListId":7110,
+	"Title":"Task2",
+	"Description":"Need to clear space on windows"
+}`
+
+**Set Todo Task Status**
+----
+  Patch method for set status of Todo Task.
+
+* **URL**
+
+   api/:taskId/setstatus/:status
+
+* **Method:**
+  
+  `PATCH`
+  
+*  **URL Params**
+
+   taskId - Id of Todo Task
+   status - new status from Todo Task
+
+* **Headers Params**
+
+   Authorization: Bearer :token
+
+* **Success Response:**
+
+  * **Code:** 200 Ok<br />
+    **Content:** `{
+    "id": 2155,
+    "toDoListId": 7110,
+    "title": "Task2",
+    "description": "Need to clear space on windows",
+    "taskStatus": "AWAIT"
+}`
+ 
+* **Error Response:**
+
+  * **Code:** 400 Bad Request <br />
+    **Content:** `Model state is not valid.`
+
+  OR
+
+  * **Code:** 400 Bad Request <br />
+    **Content:** `Error: Task id cannot be negative.`
+
+  OR
+
+  * **Code:** 404 Not Found<br />
+    **Content:** `Error: User with id cannot be negative.`
+
+  OR
+
+  * **Code:** 404 Not Found<br />
+    **Content:** `Error: Todo Task with this id not found.`
+    
+  OR
+
+  * **Code:** 404 Not Found<br />
+    **Content:** `Error: Todo List with this id not found.`
+
+
+
+**Update Task**
+----
+  Put method for update Todo Task.
+
+* **URL**
+
+   api/todotasks
+
+* **Method:**
+  
+  `PUT`
+
+* **Headers Params**
+
+   Authorization: Bearer :token
+   Content-Type: application/json
+
+* **Success Response:**
+
+  * **Code:** 200 Ok<br />
+    **Content:** `{
+    "id": 2155,
+    "toDoListId": 7110,
+    "title": "Task2",
+    "description": "Need to clear space on windows",
+    "taskStatus": "AWAIT"
+}`
+ 
+* **Error Response:**
+
+  * **Code:** 400 Bad Request <br />
+    **Content:** `Model state is not valid.`
+
+  OR
+
+  * **Code:** 400 Bad Request <br />
+    **Content:** `Error: Task id cannot be an empty.`
+
+  OR
+
+  * **Code:** 400 Bad Request<br />
+    **Content:** `Error: Task title cannot be an empty.`
+
+  OR
+
+  * **Code:** 400 Bad Request<br />
+    **Content:** `Error: Task description cannot be an empty.`
+        
+  OR
+
+  * **Code:** 404 Not Found<br />
+    **Content:** `Error: User with this id not found.`
+       
+  OR
+
+  * **Code:** 404 Not Found<br />
+    **Content:** `Error: Todo task with this id not found.`
+
+  OR
+
+  * **Code:** 404 Not Found<br />
+    **Content:** `Error: Todo List with this id not found.`
+
+* **JSON request Example**
+
+  `{
+    "id": 2,
+    "toDoListId": 1002,
+    "title": "Task2",
+    "description": "Need to clear space on linux",
+    "taskStatus": "AWAIT"
+   }`
+
+
+**Delete Task**
+----
+  Delete method for delete Todo Task.
+
+* **URL**
+
+   api/todotasks/:id
+
+* **Method:**
+  
+  `DELETE`
+
+* **Headers Params**
+
+   Authorization: Bearer :token
+
+* **Success Response:**
+
+  * **Code:** 200 Ok<br />
+    **Content:** `Todo Task has been deleted.`
+ 
+* **Error Response:**
+
+  * **Code:** 400 Bad Request <br />
+    **Content:** `Error: Model state is not valid.`
+
+  OR
+
+  * **Code:** 404 Not Found <br />
+    **Content:** `Error: User not found.`
+
+  OR
+
+  * **Code:** 404 Not Found<br />
+    **Content:** `Error: Todo Task with this id not found.`

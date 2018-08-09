@@ -57,7 +57,7 @@ namespace ToDoListServerCore.Tests.UnitTests
             #endregion
 
             #region Assert
-            var okObjectResult = Assert.IsType<NotFoundResult>(result.Result);
+            var okObjectResult = Assert.IsType<NotFoundObjectResult>(result.Result);
             #endregion
         }
     }

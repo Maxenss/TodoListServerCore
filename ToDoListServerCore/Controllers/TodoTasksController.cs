@@ -26,34 +26,6 @@ namespace ToDoListServerCore.Controllers
         }
 
         /// <summary>
-        /// Method for get TodoTasks in TodoList.
-        /// </summary>
-        /// <param name="taskListId">TodoList's ID for get tasks.</param>
-        /// <returns></returns>
-        [Authorize]
-        [HttpGet("{taskListId}")]
-        public async Task<IActionResult> GetTasks(int taskListId)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest("Error: Model state is not valid.");
-
-            int userId = this.User.GetUserId();
-
-            User user = _context.GetUserById(userId);
-
-            if (user == null)
-                return NotFound("Error: User with this id not found.");
-
-            TodoList todoList =
-                _context.GetTodoListByListIdAndUserId(taskListId, userId);
-
-            if (todoList == null)
-                return NotFound("Error: Todo list not found.");
-
-            return Ok(todoList);
-        }
-
-        /// <summary>
         /// Method for create TodoList.
         /// </summary>
         /// <param name="createToDoTaskDTO">DTO for creating TodoList</param>
@@ -212,11 +184,25 @@ namespace ToDoListServerCore.Controllers
             TodoTask todoTask = _context.GetTodoTaskById(id);
 
             if (todoTask == null)
-                return NotFound("Error: User with this id not found.");
+                return NotFound("Error: Todo Task with this id not found.");
 
             _context.RemoveTodoTask(todoTask);
 
             return Ok("Todo Task has been deleted.");
+        }
+
+        [Authorize]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetTodoTask(int id) {
+            if (!ModelState.IsValid)
+                return BadRequest("Error: Model state is not valid.");
+
+            TodoTask todoTask = _context.GetTodoTaskById(id);
+
+            if (todoTask == null)
+                return NotFound("Error: Todo Task with this id not found.");
+
+            return Ok(todoTask);
         }
     }
 }
