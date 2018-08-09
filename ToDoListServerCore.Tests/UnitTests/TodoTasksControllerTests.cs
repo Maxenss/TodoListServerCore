@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using ToDoListServerCore.Controllers;
 using ToDoListServerCore.DB;
 using ToDoListServerCore.Models;
@@ -19,7 +20,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         private TodoTasksController controller;
 
         [Fact]
-        public void DeleteTask_ReturnCorrectDeleted()
+        public void DeleteTaskTest_ReturnCorrectDeleted()
         {
             #region Arrange
             User user = new User(1, "Name1", "Email1", "Pass1");
@@ -34,8 +35,9 @@ namespace ToDoListServerCore.Tests.UnitTests
             Extensions.Extensions.IsUnitTest = true;
 
             model = new Mock<IRepository>();
-            model.Setup(repo => repo.GetUserById(user.Id)).Returns(user);
-            model.Setup(repo => repo.GetTodoTaskById(todoTask.Id)).Returns(todoTask);
+            model.Setup(repo => repo.GetUserById(user.Id)).Returns(Task.FromResult(user));
+            model.Setup(repo => repo.GetTodoTaskById(todoTask.Id))
+                .Returns(Task.FromResult(todoTask));
             model.Setup(repo => repo.RemoveTodoTask(todoTask));
             #endregion
 
@@ -48,7 +50,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         }
 
         [Fact]
-        public void DeleteList_ReturnNotFoundList()
+        public void DeleteListTest_ReturnNotFoundList()
         {
             #region Arrange
             User user = new User(1, "Name1", "Email1", "Pass1");
@@ -58,7 +60,8 @@ namespace ToDoListServerCore.Tests.UnitTests
             Extensions.Extensions.IsUnitTest = true;
 
             model = new Mock<IRepository>();
-            model.Setup(repo => repo.GetUserById(todoTaskId)).Returns(user);
+            model.Setup(repo => repo.GetUserById(todoTaskId))
+                .Returns(Task.FromResult(user));
             #endregion
 
             // Act
@@ -70,7 +73,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         }
 
         [Fact]
-        public void CreateTask_ReturnCreatedTask()
+        public void CreateTaskTest_ReturnCreatedTask()
         {
             #region Arrange
             User user = new User(1, "Name1", "Email1", "Pass1");
@@ -91,9 +94,9 @@ namespace ToDoListServerCore.Tests.UnitTests
             Extensions.Extensions.IsUnitTest = true;
 
             model = new Mock<IRepository>();
-            model.Setup(repo => repo.GetUserById(user.Id)).Returns(user);
+            model.Setup(repo => repo.GetUserById(user.Id)).Returns(Task.FromResult(user));
             model.Setup(repo => repo.GetTodoListByListIdAndUserId(
-                createToDoTaskDTO.ToDoListId, user.Id)).Returns(todoList);
+                createToDoTaskDTO.ToDoListId, user.Id)).Returns(Task.FromResult(todoList));
             model.Setup(repo => repo.AddTodoTask(createdTodoTask));
             #endregion
 
@@ -107,7 +110,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         }
 
         [Fact]
-        public void CreateTask_ReturnUserNotFound()
+        public void CreateTaskTest_ReturnUserNotFound()
         {
             #region Arrange
             User user = null;
@@ -129,7 +132,7 @@ namespace ToDoListServerCore.Tests.UnitTests
             Extensions.Extensions.IsUnitTest = true;
 
             model = new Mock<IRepository>();
-            model.Setup(repo => repo.GetUserById(userId)).Returns(user);
+            model.Setup(repo => repo.GetUserById(userId)).Returns(Task.FromResult(user));
             #endregion
 
             // Act
@@ -141,7 +144,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         }
 
         [Fact]
-        public void CreateTask_ReturnTodoListNotFound()
+        public void CreateTaskTest_ReturnTodoListNotFound()
         {
             #region Arrange
             User user = new User(1, "Name1", "Email1", "Pass1");
@@ -157,9 +160,9 @@ namespace ToDoListServerCore.Tests.UnitTests
             Extensions.Extensions.IsUnitTest = true;
 
             model = new Mock<IRepository>();
-            model.Setup(repo => repo.GetUserById(user.Id)).Returns(user);
+            model.Setup(repo => repo.GetUserById(user.Id)).Returns(Task.FromResult(user));
             model.Setup(repo => repo.GetTodoListByListIdAndUserId(
-                createToDoTaskDTO.ToDoListId, user.Id)).Returns(todoList);
+                createToDoTaskDTO.ToDoListId, user.Id)).Returns(Task.FromResult(todoList));
             #endregion
 
             // Act
@@ -171,7 +174,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         }
 
         [Fact]
-        public void CreateTask_ReturnBadRequestEmptyField()
+        public void CreateTaskTest_ReturnBadRequestEmptyField()
         {
             // Arrange 
             User user = new User(1, "Name1", "Email1", "Pass1");
@@ -192,9 +195,9 @@ namespace ToDoListServerCore.Tests.UnitTests
             Extensions.Extensions.IsUnitTest = true;
 
             model = new Mock<IRepository>();
-            model.Setup(repo => repo.GetUserById(user.Id)).Returns(user);
+            model.Setup(repo => repo.GetUserById(user.Id)).Returns(Task.FromResult(user));
             model.Setup(repo => repo.GetTodoListByListIdAndUserId(
-                createToDoTaskDTO.ToDoListId, user.Id)).Returns(todoList);
+                createToDoTaskDTO.ToDoListId, user.Id)).Returns(Task.FromResult(todoList));
             model.Setup(repo => repo.AddTodoTask(createdTodoTask));
 
             // Act
@@ -206,7 +209,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         }
 
         [Fact]
-        public void CreateTask_ReturnBadRequestInvalidModel()
+        public void CreateTaskTest_ReturnBadRequestInvalidModel()
         {
             // Arrange 
             User user = new User(1, "Name1", "Email1", "Pass1");
@@ -225,7 +228,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         }
 
         [Fact]
-        public void SetTaskStatus_ReturnCorrect()
+        public void SetTaskStatusTest_ReturnCorrect()
         {
             #region Arrange
             User user = new User(1, "Name1", "Email1", "Pass1");
@@ -252,9 +255,9 @@ namespace ToDoListServerCore.Tests.UnitTests
             Extensions.Extensions.IsUnitTest = true;
 
             model = new Mock<IRepository>();
-            model.Setup(repo => repo.GetUserById(user.Id)).Returns(user);
+            model.Setup(repo => repo.GetUserById(user.Id)).Returns(Task.FromResult(user));
             model.Setup(repo => repo.GetTodoTaskById(todoList.Id))
-                .Returns(todoTask);
+                .Returns(Task.FromResult(todoTask));
             model.Setup(repo => repo.UpdateTodoTask(todoTask));
             #endregion
 
@@ -270,7 +273,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         }
 
         [Fact]
-        public void SetTaskStatus_ReturnTodoTaskNotFound()
+        public void SetTaskStatusTest_ReturnTodoTaskNotFound()
         {
             #region Arrange
             User user = new User(1, "Name1", "Email1", "Pass1");
@@ -290,9 +293,9 @@ namespace ToDoListServerCore.Tests.UnitTests
             Extensions.Extensions.IsUnitTest = true;
 
             model = new Mock<IRepository>();
-            model.Setup(repo => repo.GetUserById(user.Id)).Returns(user);
+            model.Setup(repo => repo.GetUserById(user.Id)).Returns(Task.FromResult(user));
             model.Setup(repo => repo.GetTodoTaskById(2))
-                .Returns(todoTask);
+                .Returns(Task.FromResult(todoTask));
             model.Setup(repo => repo.UpdateTodoTask(todoTask));
             #endregion
 
@@ -307,7 +310,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         }
 
         [Fact]
-        public void SetTaskStatus_ReturnUserNotFound()
+        public void SetTaskStatusTest_ReturnUserNotFound()
         {
             #region Arrange
             User user = null;
@@ -334,9 +337,9 @@ namespace ToDoListServerCore.Tests.UnitTests
             Extensions.Extensions.IsUnitTest = true;
 
             model = new Mock<IRepository>();
-            model.Setup(repo => repo.GetUserById(userId)).Returns(user);
+            model.Setup(repo => repo.GetUserById(userId)).Returns(Task.FromResult(user));
             model.Setup(repo => repo.GetTodoTaskById(todoList.Id))
-                .Returns(todoTask);
+                .Returns(Task.FromResult(todoTask));
             model.Setup(repo => repo.UpdateTodoTask(todoTask));
             #endregion
 
@@ -351,7 +354,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         }
 
         [Fact]
-        public void SetTaskStatus_ReturnBadRequestModelIsInvalid()
+        public void SetTaskStatusTest_ReturnBadRequestModelIsInvalid()
         {
             #region Arrange
             int taskId = -1;
@@ -373,7 +376,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         }
 
         [Fact]
-        public void UpdateTask_ReturnCorrectUpdated()
+        public void UpdateTaskTest_ReturnCorrectUpdated()
         {
             #region Arrange
             User user = new User(1, "Name1", "Email1", "Pass1");
@@ -405,9 +408,9 @@ namespace ToDoListServerCore.Tests.UnitTests
             Extensions.Extensions.IsUnitTest = true;
 
             model = new Mock<IRepository>();
-            model.Setup(repo => repo.GetUserById(user.Id)).Returns(user);
+            model.Setup(repo => repo.GetUserById(user.Id)).Returns(Task.FromResult(user));
             model.Setup(repo => repo.GetTodoTaskById(updateToDoTaskDTO.TaskId))
-                .Returns(todoTask);
+                .Returns(Task.FromResult(todoTask));
             model.Setup(repo => repo.UpdateTodoTask(todoTask));
             #endregion
 
@@ -427,7 +430,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         }
 
         [Fact]
-        public void UpdateTask_ReturnTodoTaskNotFound()
+        public void UpdateTaskTest_ReturnTodoTaskNotFound()
         {
             #region Arrange
             User user = new User(1, "Name1", "Email1", "Pass1");
@@ -453,9 +456,9 @@ namespace ToDoListServerCore.Tests.UnitTests
             Extensions.Extensions.IsUnitTest = true;
 
             model = new Mock<IRepository>();
-            model.Setup(repo => repo.GetUserById(user.Id)).Returns(user);
+            model.Setup(repo => repo.GetUserById(user.Id)).Returns(Task.FromResult(user));
             model.Setup(repo => repo.GetTodoTaskById(todoTaskId))
-                .Returns(todoTask);
+                .Returns(Task.FromResult(todoTask));
             model.Setup(repo => repo.UpdateTodoTask(todoTask));
             #endregion
 
@@ -470,7 +473,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         }
 
         [Fact]
-        public void UpdateTask_ReturnUserNotFound()
+        public void UpdateTaskTest_ReturnUserNotFound()
         {
             #region Arrange
             User user = null;
@@ -502,9 +505,9 @@ namespace ToDoListServerCore.Tests.UnitTests
             Extensions.Extensions.IsUnitTest = true;
 
             model = new Mock<IRepository>();
-            model.Setup(repo => repo.GetUserById(userId)).Returns(user);
+            model.Setup(repo => repo.GetUserById(userId)).Returns(Task.FromResult(user));
             model.Setup(repo => repo.GetTodoTaskById(updateToDoTaskDTO.TaskId))
-                .Returns(todoTask);
+                .Returns(Task.FromResult(todoTask));
             model.Setup(repo => repo.UpdateTodoTask(todoTask));
             #endregion
 
@@ -519,7 +522,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         }
 
         [Fact]
-        public void UpdateTask_ReturnBadRequestNotValidModelState()
+        public void UpdateTaskTest_ReturnBadRequestNotValidModelState()
         {
             #region Arrange
             User user = new User(1, "Name1", "Email1", "Pass1");
@@ -546,9 +549,9 @@ namespace ToDoListServerCore.Tests.UnitTests
             Extensions.Extensions.IsUnitTest = true;
 
             model = new Mock<IRepository>();
-            model.Setup(repo => repo.GetUserById(user.Id)).Returns(user);
+            model.Setup(repo => repo.GetUserById(user.Id)).Returns(Task.FromResult(user));
             model.Setup(repo => repo.GetTodoTaskById(todoTask.Id))
-                .Returns(todoTask);
+                .Returns(Task.FromResult(todoTask));
             model.Setup(repo => repo.UpdateTodoTask(todoTask));
             #endregion
 
@@ -563,7 +566,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         }
 
         [Fact]
-        public void UpdateTask_ReturnBadRequestEmptyFields()
+        public void UpdateTaskTest_ReturnBadRequestEmptyFields()
         {
             #region Arrange
             User user = new User(1, "Name1", "Email1", "Pass1");
@@ -595,9 +598,9 @@ namespace ToDoListServerCore.Tests.UnitTests
             Extensions.Extensions.IsUnitTest = true;
 
             model = new Mock<IRepository>();
-            model.Setup(repo => repo.GetUserById(user.Id)).Returns(user);
+            model.Setup(repo => repo.GetUserById(user.Id)).Returns(Task.FromResult(user));
             model.Setup(repo => repo.GetTodoTaskById(updateToDoTaskDTO.TaskId))
-                .Returns(todoTask);
+                .Returns(Task.FromResult(todoTask));
             model.Setup(repo => repo.UpdateTodoTask(todoTask));
             #endregion
 
@@ -612,7 +615,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         }
 
         [Fact]
-        public void GetTodoTask_ReturnCorrectOk()
+        public void GetTodoTaskTest_ReturnCorrectOk()
         {
             #region Arrange
             TodoTask todoTask = new TodoTask
@@ -628,7 +631,7 @@ namespace ToDoListServerCore.Tests.UnitTests
 
             model = new Mock<IRepository>();
             model.Setup(repo => repo.GetTodoTaskById(todoTask.Id))
-                .Returns(todoTask);
+                .Returns(Task.FromResult(todoTask));
             #endregion
 
             #region Act
@@ -644,7 +647,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         }
 
         [Fact]
-        public void GetTodoTask_ReturnBadRequestNegativeId()
+        public void GetTodoTaskTest_ReturnBadRequestNegativeId()
         {
             #region Arrange
             int negativeId = -1;
@@ -665,7 +668,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         }
 
         [Fact]
-        public void GetTodoTask_ReturnNotFoundTodoTask()
+        public void GetTodoTaskTest_ReturnNotFoundTodoTask()
         {
             #region Arrange
             TodoTask todoTask = null;
@@ -675,7 +678,7 @@ namespace ToDoListServerCore.Tests.UnitTests
 
             model = new Mock<IRepository>();
             model.Setup(repo => repo.GetTodoTaskById(todoTaskId))
-                .Returns(todoTask);
+                .Returns(Task.FromResult(todoTask));
             #endregion
 
             #region Act
@@ -687,6 +690,5 @@ namespace ToDoListServerCore.Tests.UnitTests
             var okObjectResult = Assert.IsType<NotFoundObjectResult>(result.Result);
             #endregion
         }
-
     }
 }

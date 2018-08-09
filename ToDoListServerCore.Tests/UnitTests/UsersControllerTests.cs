@@ -5,26 +5,29 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using ToDoListServerCore.Controllers;
 using ToDoListServerCore.DB;
 using Xunit;
 
 namespace ToDoListServerCore.Tests.UnitTests
 {
-   public class UsersControllerTests
+    public class UsersControllerTests
     {
         private Mock<IRepository> model;
         private UsersController controller;
 
         [Fact]
-        public void DeleteUser_ReturnCorrectDeletedUser() {
+        public void DeleteUserTest_ReturnCorrectDeletedUser()
+        {
             #region Arrange
             User user = new User(1, "Name1", "Email1", "Pass1");
 
             Extensions.Extensions.IsUnitTest = true;
 
             model = new Mock<IRepository>();
-            model.Setup(repo => repo.GetUserById(user.Id)).Returns(user);
+            model.Setup(repo => repo.GetUserById(user.Id))
+                .Returns(Task.FromResult(user));
             model.Setup(repo => repo.RemoveUser(user));
             #endregion
 
@@ -39,7 +42,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         }
 
         [Fact]
-        public void DeleteUser_ReturnUserNotFound()
+        public void DeleteUserTest_ReturnUserNotFound()
         {
             #region Arrange
             User nullUser = null;
@@ -48,7 +51,8 @@ namespace ToDoListServerCore.Tests.UnitTests
             Extensions.Extensions.IsUnitTest = true;
 
             model = new Mock<IRepository>();
-            model.Setup(repo => repo.GetUserById(userId)).Returns(nullUser);
+            model.Setup(repo => repo.GetUserById(userId))
+                .Returns(Task.FromResult(nullUser));
             #endregion
 
             #region Act

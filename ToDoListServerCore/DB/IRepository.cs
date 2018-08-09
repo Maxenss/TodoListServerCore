@@ -6,22 +6,22 @@ using ToDoListServerCore.Models;
 
 namespace ToDoListServerCore.DB
 {
-   public interface IRepository
+    public interface IRepository
     {
         IEnumerable<User> GetUsers();
         IEnumerable<TodoTask> GetToDoTasks();
         IEnumerable<TodoList> GetToDoLists();
 
-        User GetUserById(int id);
-         User GetUserByEmail(string email);
-         User GetUserByEmailAndPassword(string email, string password);
+        Task<User> GetUserById(int id);
+        Task<User> GetUserByEmail(string email);
+        Task<User> GetUserByEmailAndPassword(string email, string password);
 
-        TodoList GetTodoListByTitleAndUserId(string title, int userId);
-        TodoList GetTodoListByListIdAndUserId(int listId, int userId);
+        Task<TodoList> GetTodoListByTitleAndUserId(string title, int userId);
+        Task<TodoList> GetTodoListByListIdAndUserId(int listId, int userId);
         List<TodoList> GetTodoListsByUserId(int userId);
 
-        TodoTask GetTodoTaskById(int id);
-        TodoTask GetTodoTaskByIdAndUserId(int taskId, int userId);
+        Task<TodoTask> GetTodoTaskById(int id);
+        Task<TodoTask> GetTodoTaskByIdAndUserId(int taskId, int userId);
 
         void AddUser(User user);
         void RemoveUser(User user);

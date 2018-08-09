@@ -36,35 +36,36 @@ namespace ToDoListServerCore.DB
             return Users;
         }
 
-        public  User GetUserByEmail(string email)
+        public async Task<User> GetUserByEmail(string email)
         {
-            return  this.Users.Include(t => t.TodoLists)
-                .SingleOrDefault(u => u.Email == email);
+            return await this.Users.Include(t => t.TodoLists)
+                .SingleOrDefaultAsync(u => u.Email == email);
         }
 
-        public User GetUserById(int id)
+        public async Task<User> GetUserById(int id)
         {
-            return this.Users.Include(t => t.TodoLists)
-                .SingleOrDefault(u => u.Id == id);
+            return await this.Users.Include(t => t.TodoLists)
+                .SingleOrDefaultAsync(u => u.Id == id);
         }
 
-        public  User GetUserByEmailAndPassword(string email, string password)
+        public async Task<User> GetUserByEmailAndPassword(string email, string password)
         {
-            User user =  this.Users.Include(t => t.TodoLists)
-                .SingleOrDefault(u => u.Email == email && u.Password == password);
+            User user = await this.Users.Include(t => t.TodoLists)
+                .SingleOrDefaultAsync(u => u.Email == email && u.Password == password);
 
             return user;
         }
 
-        public TodoList GetTodoListByTitleAndUserId(string title, int userId)
+        public async Task<TodoList> GetTodoListByTitleAndUserId(string title, int userId)
         {
-            return this.TodoLists.SingleOrDefault(l => l.UserId == userId && l.Title == title);
+            return await this.TodoLists
+                .SingleOrDefaultAsync(l => l.UserId == userId && l.Title == title);
         }
 
-        public TodoList GetTodoListByListIdAndUserId(int listId, int userId)
+        public async Task<TodoList> GetTodoListByListIdAndUserId(int listId, int userId)
         {
-            return this.TodoLists.Include(t => t.Tasks)
-                .SingleOrDefault(l => l.Id == listId && l.UserId == userId);
+            return await this.TodoLists.Include(t => t.Tasks)
+                .SingleOrDefaultAsync(l => l.Id == listId && l.UserId == userId);
         }
 
         public List<TodoList> GetTodoListsByUserId(int userId)
@@ -75,13 +76,14 @@ namespace ToDoListServerCore.DB
             return todoLists;
         }
 
-        public TodoTask GetTodoTaskById(int id)
+        public async Task<TodoTask> GetTodoTaskById(int id)
         {
-            return TodoTasks.SingleOrDefault(t => t.Id == id);
+            return await TodoTasks.SingleOrDefaultAsync(t => t.Id == id);
         }
 
-        public TodoTask GetTodoTaskByIdAndUserId(int taskId, int userId) {
-            return TodoTasks.SingleOrDefault(t => t.Id == taskId);
+        public async Task<TodoTask> GetTodoTaskByIdAndUserId(int taskId, int userId)
+        {
+            return await TodoTasks.SingleOrDefaultAsync(t => t.Id == taskId);
         }
 
         public void AddUser(User user)
@@ -90,7 +92,8 @@ namespace ToDoListServerCore.DB
             SaveChanges();
         }
 
-        public void RemoveUser(User user) {
+        public void RemoveUser(User user)
+        {
             Users.Remove(user);
             SaveChanges();
         }
@@ -107,7 +110,7 @@ namespace ToDoListServerCore.DB
             SaveChanges();
         }
 
-        public  void RemoveTodoList(TodoList todoList)
+        public void RemoveTodoList(TodoList todoList)
         {
             TodoLists.Remove(todoList);
             SaveChanges();
@@ -119,10 +122,10 @@ namespace ToDoListServerCore.DB
             await SaveChangesAsync();
         }
 
-        public  void UpdateTodoTask(TodoTask todoTask)
+        public void UpdateTodoTask(TodoTask todoTask)
         {
             TodoTasks.Update(todoTask);
-             SaveChanges();
+            SaveChanges();
         }
 
         public async void RemoveTodoTask(TodoTask todoTask)

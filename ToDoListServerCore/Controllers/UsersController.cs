@@ -36,7 +36,7 @@ namespace ToDoListServerCore.Controllers
 
             int userId = User.GetUserId();
 
-            var user = _context.GetUserById(userId);
+            var user = await _context.GetUserById(userId);
             if (user == null)
                 return NotFound("Error: User not found.");
 
@@ -52,11 +52,12 @@ namespace ToDoListServerCore.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser(int id) {
+        public async Task<IActionResult> GetUser(int id)
+        {
             if (!ModelState.IsValid)
                 return BadRequest("Error: Model state is not valid");
 
-            User user = _context.GetUserById(id);
+            User user = await _context.GetUserById(id);
 
             if (user == null)
                 return NotFound("Error: User not found");

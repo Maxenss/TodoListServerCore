@@ -47,7 +47,7 @@ namespace ToDoListServerCore.Controllers
                 return BadRequest("Error: Model state is not valid.");
 
             // Email validation
-            if (signUpDTO.Email == null || signUpDTO.Email == String.Empty) 
+            if (signUpDTO.Email == null || signUpDTO.Email == String.Empty)
                 return BadRequest("Error: Empty Email.");
 
             if (!IsValidEmail(signUpDTO.Email))
@@ -63,7 +63,7 @@ namespace ToDoListServerCore.Controllers
             if (signUpDTO.Name == null || signUpDTO.Name == String.Empty)
                 return BadRequest("Error: Empty Name");
 
-            User existUser =  _context.GetUserByEmail(signUpDTO.Email);
+            User existUser = await _context.GetUserByEmail(signUpDTO.Email);
 
             if (existUser != null)
                 return BadRequest("Error: User with this email already exist.");
@@ -74,7 +74,7 @@ namespace ToDoListServerCore.Controllers
             _context.AddUser(user);
 
             if (Extensions.Extensions.IsUnitTest)
-               return Created("localhost", user);
+                return Created("localhost", user);
 
             // Get URL patch of object
             string webRootPath = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
@@ -105,7 +105,8 @@ namespace ToDoListServerCore.Controllers
             if (signInDTO.Password == null || signInDTO.Password == String.Empty)
                 return BadRequest("Error: Empty Password.");
 
-            User user = _context.GetUserByEmailAndPassword(signInDTO.Email, signInDTO.Password);
+            User user = await _context
+                .GetUserByEmailAndPassword(signInDTO.Email, signInDTO.Password);
 
             if (user == null)
                 return NotFound("Error: Not correct email or password.");
@@ -144,7 +145,7 @@ namespace ToDoListServerCore.Controllers
         {
             try
             {
-                System.Net.Mail.MailAddress addr 
+                System.Net.Mail.MailAddress addr
                     = new System.Net.Mail.MailAddress(email);
                 return addr.Address == email;
             }

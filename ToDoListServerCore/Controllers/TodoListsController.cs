@@ -48,12 +48,13 @@ namespace ToDoListServerCore.Controllers
 
             var userId = this.User.GetUserId();
 
-            User user = _context.GetUserById(userId);
+            User user = await _context.GetUserById(userId);
 
             if (user == null)
                 return NotFound("Error: User not found.");
 
-            TodoList existToDoList = _context.GetTodoListByTitleAndUserId(title, userId);
+            TodoList existToDoList = await _context
+                .GetTodoListByTitleAndUserId(title, userId);
 
             if (existToDoList != null)
                 return BadRequest("Error: This Todo List already exist.");
@@ -86,12 +87,13 @@ namespace ToDoListServerCore.Controllers
 
             var userId = this.User.GetUserId();
 
-            User user = _context.GetUserById(userId);
+            User user = await _context.GetUserById(userId);
 
             if (user == null)
                 return NotFound("Error: User with this id not found.");
 
-            TodoList todoList = _context.GetTodoListByListIdAndUserId(listId, userId);
+            TodoList todoList = await _context
+                .GetTodoListByListIdAndUserId(listId, userId);
 
             if (todoList == null)
                 return NotFound("Error: Todo List with this id not found.");
@@ -122,12 +124,13 @@ namespace ToDoListServerCore.Controllers
 
             var userId = User.GetUserId();
 
-            User user = _context.GetUserById(userId);
+            User user = await _context.GetUserById(userId);
 
             if (user == null)
                 return NotFound("Error: User with this id not found.");
 
-            TodoList todoList = _context.GetTodoListByListIdAndUserId(listId, userId);
+            TodoList todoList = await _context
+                .GetTodoListByListIdAndUserId(listId, userId);
 
             if (todoList == null)
                 return NotFound("Error: Todo List with this id not found.");
@@ -156,12 +159,13 @@ namespace ToDoListServerCore.Controllers
 
             var userId = User.GetUserId();
 
-            User user = _context.GetUserById(userId);
+            User user = await _context.GetUserById(userId);
 
             if (user == null)
                 return NotFound("Error: User with this id not found.");
 
-            TodoList todoList = _context.GetTodoListByListIdAndUserId(listId, userId);
+            TodoList todoList = await _context
+                .GetTodoListByListIdAndUserId(listId, userId);
 
             if (todoList == null)
                 return NotFound("Error: Todo List with this id not found.");
@@ -181,7 +185,7 @@ namespace ToDoListServerCore.Controllers
                 return BadRequest("Error: Model state is not valid.");
 
             int userId = this.User.GetUserId();
-            User user = _context.GetUserById(userId);
+            User user = await _context.GetUserById(userId);
 
             if (user == null)
                 return NotFound("Errod: User with this id not found.");

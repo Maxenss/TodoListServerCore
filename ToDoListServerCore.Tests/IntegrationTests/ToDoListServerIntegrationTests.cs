@@ -34,13 +34,13 @@ namespace ToDoListServerCore.Tests
         }
 
         [Fact]
-        public async Task System_Test()
+        public async Task FullAPI_Test()
         {
             // Sign Up Test
-            User user = await SignUpPost();
+            User user = await SignUpPostTest();
 
             // Sign In Test
-            UserDTO userDTO = await SignInPost();
+            UserDTO userDTO = await SignInPostTest();
             var token = userDTO.Token;
 
             // Set authorization header for authorization
@@ -48,43 +48,45 @@ namespace ToDoListServerCore.Tests
                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
             // Create Todo List Test
-            var todoList = await CreateToDoList("New List 1");
-            var todoList2 = await CreateToDoList("New List2");
+            var todoList = await CreateToDoListTest("New List 3");
+            var todoList2 = await CreateToDoListTest("New List 4");
 
             // Create Todo Task Test
-            var todoTask1 = await CreateToDoTask(todoList.Id, "Title1", "Description1");
-            var todoTask2 = await CreateToDoTask(todoList.Id, "Title2", "Description2");
-            var todoTask3 = await CreateToDoTask(todoList.Id, "Title3", "Description3");
+            var todoTask1 = await CreateToDoTaskTest(todoList.Id, "Title1", "Description1");
+            var todoTask2 = await CreateToDoTaskTest(todoList.Id, "Title2", "Description2");
+            var todoTask3 = await CreateToDoTaskTest(todoList.Id, "Title3", "Description3");
 
             // Set Todo Task status Test 
-            await SetTodoTaskStatus(todoTask1.Id, TodoTask.Status.DONE);
-            await SetTodoTaskStatus(todoTask2.Id, TodoTask.Status.CANCELED);
-            await SetTodoTaskStatus(todoTask2.Id, TodoTask.Status.AWAIT);
+            await SetTodoTaskStatusTest(todoTask1.Id, TodoTask.Status.DONE);
+            await SetTodoTaskStatusTest(todoTask2.Id, TodoTask.Status.CANCELED);
+            await SetTodoTaskStatusTest(todoTask2.Id, TodoTask.Status.AWAIT);
 
             // Update Todo Task Test
-            TodoTaskDTO updatedToDoTask = await UpdateTodoTask(todoTask1, todoList2);
+            TodoTaskDTO updatedToDoTask =
+                await UpdateTodoTaskTest(todoTask1, todoList2);
 
             // Get Todo Lists For User Test
-            await GetListsForUser(2);
+            await GetListsForUserTest(2);
 
             // Delete Todo List Test
-            await DeleteTodoList(todoList2.Id);
+            await DeleteTodoListTest(todoList2.Id);
 
             // Get Todo Lists For User Test
-            await GetListsForUser(1);
+            await GetListsForUserTest(1);
 
             // Set List Title Test
-            await SetListTitle(todoList.Id, "Updated Title");
+            await SetListTitleTest(todoList.Id, "Updated Title");
 
-            await DeleteUser();
+            // Delete User Tess
+            await DeleteUserTest();
         }
 
-        private async Task<User> SignUpPost()
+        private async Task<User> SignUpPostTest()
         {
             // Arrange
             var signUpDTO = new SignUpDTO
             {
-                Email = "test2@gmail.com",
+                Email = "test3@gmail.com",
                 Password = "123456",
                 Name = "User123"
             };
@@ -103,12 +105,12 @@ namespace ToDoListServerCore.Tests
             return user;
         }
 
-        private async Task<UserDTO> SignInPost()
+        private async Task<UserDTO> SignInPostTest()
         {
             // Arrange
             var signInDto = new SignInDTO
             {
-                Email = "test2@gmail.com",
+                Email = "test3@gmail.com",
                 Password = "123456"
             };
             var content = JsonConvert.SerializeObject(signInDto);
@@ -125,7 +127,7 @@ namespace ToDoListServerCore.Tests
             return userDto;
         }
 
-        private async Task<TodoList> CreateToDoList(string title)
+        private async Task<TodoList> CreateToDoListTest(string title)
         {
             // Arrange
             CreateListDTO createListDTO = new CreateListDTO
@@ -145,7 +147,7 @@ namespace ToDoListServerCore.Tests
             return todoList;
         }
 
-        private async Task<TodoList> SetListTitle(int listId, string title)
+        private async Task<TodoList> SetListTitleTest(int listId, string title)
         {
             // Act
             string url = "/api/TodoLists/setlisttitle?"
@@ -165,7 +167,7 @@ namespace ToDoListServerCore.Tests
             return todoList;
         }
 
-        private async Task<TodoTaskDTO> CreateToDoTask(int listId
+        private async Task<TodoTaskDTO> CreateToDoTaskTest(int listId
             , string title, string description)
         {
             // Arrange
@@ -191,7 +193,7 @@ namespace ToDoListServerCore.Tests
             return todoTaskDTO;
         }
 
-        private async Task<TodoTaskDTO> SetTodoTaskStatus(int todoTaskId
+        private async Task<TodoTaskDTO> SetTodoTaskStatusTest(int todoTaskId
             , TodoTask.Status taskStatus)
         {
             // Arrange
@@ -214,7 +216,7 @@ namespace ToDoListServerCore.Tests
             return updatedTodoTaskDTO;
         }
 
-        private async Task<TodoTaskDTO> UpdateTodoTask(TodoTaskDTO todoTaskDTO
+        private async Task<TodoTaskDTO> UpdateTodoTaskTest(TodoTaskDTO todoTaskDTO
             , TodoList todoList)
         {
             // Arrange
@@ -250,7 +252,7 @@ namespace ToDoListServerCore.Tests
             return updatedTodoTaskDTO;
         }
 
-        private async Task<List<TodoList>> GetListsForUser(int countOfLists)
+        private async Task<List<TodoList>> GetListsForUserTest(int countOfLists)
         {
             // Act
             var response = await _client.GetAsync("/api/TodoLists/");
@@ -266,14 +268,14 @@ namespace ToDoListServerCore.Tests
             return todoLists;
         }
 
-        private async Task DeleteUser()
+        private async Task DeleteUserTest()
         {
             var response = await _client.DeleteAsync("/api/Users/");
 
             response.EnsureSuccessStatusCode();
         }
 
-        private async Task DeleteTodoList(int todoListId)
+        private async Task DeleteTodoListTest(int todoListId)
         {
             var response = await _client.DeleteAsync("/api/todolists/" + todoListId);
 

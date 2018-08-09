@@ -2,6 +2,7 @@
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ToDoListServerCore.Controllers;
 using ToDoListServerCore.DB;
 using ToDoListServerCore.Models.DTO;
@@ -16,14 +17,15 @@ namespace ToDoListServerCore.Tests.UnitTests
 
         public AccountControllerTest()
         {
-            
+
         }
 
         [Fact]
         public void SignUpTest_ReturnEmailExist()
         {
             #region Arrange
-            SignUpDTO signUpDTO = new SignUpDTO {
+            SignUpDTO signUpDTO = new SignUpDTO
+            {
                 Email = "Email1",
                 Password = "Pass1",
                 Name = "Name1"
@@ -33,7 +35,8 @@ namespace ToDoListServerCore.Tests.UnitTests
 
             model = new Mock<IRepository>();
             model.Setup(repo => repo.GetUsers()).Returns(GetTestUsers());
-            model.Setup(repo => repo.GetUserByEmail("Email1")).Returns( user);
+            model.Setup(repo => repo.GetUserByEmail("Email1"))
+                .Returns(Task.FromResult(user));
 
             controller = new AccountController(model.Object);
             #endregion
@@ -63,7 +66,8 @@ namespace ToDoListServerCore.Tests.UnitTests
 
             model = new Mock<IRepository>();
             model.Setup(repo => repo.GetUsers()).Returns(GetTestUsers());
-            model.Setup(repo => repo.GetUserByEmail("Email1")).Returns(nullUser);
+            model.Setup(repo => repo.GetUserByEmail("Email1"))
+                .Returns(Task.FromResult(nullUser));
             model.Setup(repo => repo.AddUser(user));
 
             controller = new AccountController(model.Object);
@@ -91,7 +95,8 @@ namespace ToDoListServerCore.Tests.UnitTests
 
             model = new Mock<IRepository>();
             model.Setup(repo => repo.GetUsers()).Returns(GetTestUsers());
-            model.Setup(repo => repo.GetUserByEmail("Email1")).Returns(user);
+            model.Setup(repo => repo.GetUserByEmail("Email1"))
+                .Returns(Task.FromResult(user));
 
             controller = new AccountController(model.Object);
             #endregion
@@ -118,7 +123,8 @@ namespace ToDoListServerCore.Tests.UnitTests
 
             model = new Mock<IRepository>();
             model.Setup(repo => repo.GetUsers()).Returns(GetTestUsers());
-            model.Setup(repo => repo.GetUserByEmail("Email1")).Returns(user);
+            model.Setup(repo => repo.GetUserByEmail("Email1"))
+                .Returns(Task.FromResult(user));
 
             controller = new AccountController(model.Object);
             #endregion
@@ -145,7 +151,8 @@ namespace ToDoListServerCore.Tests.UnitTests
 
             model = new Mock<IRepository>();
             model.Setup(repo => repo.GetUsers()).Returns(GetTestUsers());
-            model.Setup(repo => repo.GetUserByEmail("Email1")).Returns(user);
+            model.Setup(repo => repo.GetUserByEmail("Email1"))
+                .Returns(Task.FromResult(user));
 
             controller = new AccountController(model.Object);
             #endregion
@@ -172,7 +179,8 @@ namespace ToDoListServerCore.Tests.UnitTests
 
             model = new Mock<IRepository>();
             model.Setup(repo => repo.GetUsers()).Returns(GetTestUsers());
-            model.Setup(repo => repo.GetUserByEmail("Email1")).Returns(user);
+            model.Setup(repo => repo.GetUserByEmail("Email1"))
+                .Returns(Task.FromResult(user));
 
             controller = new AccountController(model.Object);
             #endregion
@@ -185,7 +193,8 @@ namespace ToDoListServerCore.Tests.UnitTests
         }
 
         [Fact]
-        public void SignInTest_ReturnUserNotFound() {
+        public void SignInTest_ReturnUserNotFound()
+        {
             #region Arrange
             SignInDTO signInDTO = new SignInDTO
             {
@@ -197,7 +206,8 @@ namespace ToDoListServerCore.Tests.UnitTests
 
             model = new Mock<IRepository>();
             model.Setup(repo => repo.GetUserByEmailAndPassword(
-                signInDTO.Email, signInDTO.Password)).Returns(user);
+                signInDTO.Email, signInDTO.Password))
+                .Returns(Task.FromResult(user));
 
             controller = new AccountController(model.Object);
             #endregion
@@ -223,7 +233,8 @@ namespace ToDoListServerCore.Tests.UnitTests
 
             model = new Mock<IRepository>();
             model.Setup(repo => repo.GetUserByEmailAndPassword(
-                signInDTO.Email, signInDTO.Password)).Returns(user);
+                signInDTO.Email, signInDTO.Password))
+                .Returns(Task.FromResult(user));
 
             controller = new AccountController(model.Object);
             #endregion
@@ -253,7 +264,8 @@ namespace ToDoListServerCore.Tests.UnitTests
             Assert.IsType<BadRequestObjectResult>(result.Result);
         }
 
-        private List<User> GetTestUsers() {
+        private List<User> GetTestUsers()
+        {
             User user = new User(1, "Test1", "Email1", "Pass1");
 
             List<User> users = new List<User>();
