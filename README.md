@@ -5,8 +5,9 @@
 # How to Start 
 
 Necessary tools and frameworks:
- - Visual Studio 2015+/Visuas Studio Code.
- - .NET Framework Core.
+ - Visual Studio 2015+/Visuas Studio Code;
+ - .NET Framework;
+ - .NET Framework Core;
  - MSSQL Server.
  
  # How to connect to your database
@@ -20,4 +21,8 @@ Necessary tools and frameworks:
 
  # How to get solution
 
- - Write in Git Bash: 'https://github.com/Maxenss/TodoListServerCore'
+ - Write in Git Bash: `git clone https://github.com/Maxenss/TodoListServerCore`
+
+# API Docs
+
+- Go to link https://github.com/Maxenss/TodoListServerCore/blob/master/API.md
