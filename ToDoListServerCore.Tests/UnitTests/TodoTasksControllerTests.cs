@@ -74,7 +74,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         {
             #region Arrange
             User user = new User(1, "Name1", "Email1", "Pass1");
-            CreateToDoTaskDTO createToDoTaskDTO = new CreateToDoTaskDTO
+            CreateTodoTaskDTO createToDoTaskDTO = new CreateTodoTaskDTO
             {
                 ToDoListId = 1,
                 Title = "Title1",
@@ -111,7 +111,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         {
             #region Arrange
             User user = null;
-            CreateToDoTaskDTO createToDoTaskDTO = new CreateToDoTaskDTO
+            CreateTodoTaskDTO createToDoTaskDTO = new CreateTodoTaskDTO
             {
                 ToDoListId = 1,
                 Title = "Title1",
@@ -145,7 +145,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         {
             #region Arrange
             User user = new User(1, "Name1", "Email1", "Pass1");
-            CreateToDoTaskDTO createToDoTaskDTO = new CreateToDoTaskDTO
+            CreateTodoTaskDTO createToDoTaskDTO = new CreateTodoTaskDTO
             {
                 ToDoListId = 1,
                 Title = "Title1",
@@ -175,7 +175,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         {
             // Arrange 
             User user = new User(1, "Name1", "Email1", "Pass1");
-            CreateToDoTaskDTO createToDoTaskDTO = new CreateToDoTaskDTO
+            CreateTodoTaskDTO createToDoTaskDTO = new CreateTodoTaskDTO
             {
                 ToDoListId = 1,
                 Title = "",
@@ -210,7 +210,7 @@ namespace ToDoListServerCore.Tests.UnitTests
         {
             // Arrange 
             User user = new User(1, "Name1", "Email1", "Pass1");
-            CreateToDoTaskDTO createToDoTaskDTO = null;
+            CreateTodoTaskDTO createToDoTaskDTO = null;
 
             Extensions.Extensions.IsUnitTest = true;
 
@@ -395,7 +395,7 @@ namespace ToDoListServerCore.Tests.UnitTests
                 TaskStatus = TodoTask.Status.AWAIT
             };
 
-            UpdateToDoTaskDTO updateToDoTaskDTO = new UpdateToDoTaskDTO
+            UpdateTodoTaskDTO updateToDoTaskDTO = new UpdateTodoTaskDTO
             {
                 TaskId = todoTask.Id,
                 Description = "New Description",
@@ -440,7 +440,7 @@ namespace ToDoListServerCore.Tests.UnitTests
             };
             user.TodoLists.Add(todoList);
 
-            UpdateToDoTaskDTO updateToDoTaskDTO = new UpdateToDoTaskDTO
+            UpdateTodoTaskDTO updateToDoTaskDTO = new UpdateTodoTaskDTO
             {
                 TaskId = 1,
                 Description = "New Description",
@@ -492,7 +492,7 @@ namespace ToDoListServerCore.Tests.UnitTests
                 TaskStatus = TodoTask.Status.AWAIT
             };
 
-            UpdateToDoTaskDTO updateToDoTaskDTO = new UpdateToDoTaskDTO
+            UpdateTodoTaskDTO updateToDoTaskDTO = new UpdateTodoTaskDTO
             {
                 TaskId = todoTask.Id,
                 Description = "New Description",
@@ -541,7 +541,7 @@ namespace ToDoListServerCore.Tests.UnitTests
                 TaskStatus = TodoTask.Status.AWAIT
             };
 
-            UpdateToDoTaskDTO updateToDoTaskDTO = null;
+            UpdateTodoTaskDTO updateToDoTaskDTO = null;
 
             Extensions.Extensions.IsUnitTest = true;
 
@@ -585,7 +585,7 @@ namespace ToDoListServerCore.Tests.UnitTests
                 TaskStatus = TodoTask.Status.AWAIT
             };
 
-            UpdateToDoTaskDTO updateToDoTaskDTO = new UpdateToDoTaskDTO
+            UpdateTodoTaskDTO updateToDoTaskDTO = new UpdateTodoTaskDTO
             {
                 TaskId = 0,
                 Description = "",
@@ -610,5 +610,83 @@ namespace ToDoListServerCore.Tests.UnitTests
             var okObjectResult = Assert.IsType<BadRequestObjectResult>(result.Result);
             #endregion
         }
+
+        [Fact]
+        public void GetTodoTask_ReturnCorrectOk()
+        {
+            #region Arrange
+            TodoTask todoTask = new TodoTask
+            {
+                Id = 1,
+                Description = "Description1",
+                Title = "List1",
+                ToDoListId = 1,
+                TaskStatus = TodoTask.Status.AWAIT
+            };
+
+            Extensions.Extensions.IsUnitTest = true;
+
+            model = new Mock<IRepository>();
+            model.Setup(repo => repo.GetTodoTaskById(todoTask.Id))
+                .Returns(todoTask);
+            #endregion
+
+            #region Act
+            controller = new TodoTasksController(model.Object);
+            var result = controller.GetTodoTask(todoTask.Id);
+            #endregion
+
+            #region Assert
+            var okObjectResult = Assert.IsType<OkObjectResult>(result.Result);
+            TodoTask taskFromServer = okObjectResult.Value as TodoTask;
+            Assert.Equal(todoTask.Id, taskFromServer.Id);
+            #endregion
+        }
+
+        [Fact]
+        public void GetTodoTask_ReturnBadRequestNegativeId()
+        {
+            #region Arrange
+            int negativeId = -1;
+
+            Extensions.Extensions.IsUnitTest = true;
+
+            model = new Mock<IRepository>();
+            #endregion
+
+            #region Act
+            controller = new TodoTasksController(model.Object);
+            var result = controller.GetTodoTask(negativeId);
+            #endregion
+
+            #region Assert
+            var okObjectResult = Assert.IsType<BadRequestObjectResult>(result.Result);
+            #endregion
+        }
+
+        [Fact]
+        public void GetTodoTask_ReturnNotFoundTodoTask()
+        {
+            #region Arrange
+            TodoTask todoTask = null;
+            int todoTaskId = 2;
+
+            Extensions.Extensions.IsUnitTest = true;
+
+            model = new Mock<IRepository>();
+            model.Setup(repo => repo.GetTodoTaskById(todoTaskId))
+                .Returns(todoTask);
+            #endregion
+
+            #region Act
+            controller = new TodoTasksController(model.Object);
+            var result = controller.GetTodoTask(todoTaskId);
+            #endregion
+
+            #region Assert
+            var okObjectResult = Assert.IsType<NotFoundObjectResult>(result.Result);
+            #endregion
+        }
+
     }
 }

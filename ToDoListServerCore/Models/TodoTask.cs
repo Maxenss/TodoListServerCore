@@ -41,7 +41,7 @@ namespace ToDoListServerCore.Models
             Description = description;
         }
 
-        public TodoTask(CreateToDoTaskDTO createToDoTaskDTO) {
+        public TodoTask(CreateTodoTaskDTO createToDoTaskDTO) {
             ToDoListId = createToDoTaskDTO.ToDoListId;
             Title = createToDoTaskDTO.Title;
             Description = createToDoTaskDTO.Description;

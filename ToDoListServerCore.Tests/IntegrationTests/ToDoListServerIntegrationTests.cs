@@ -169,7 +169,7 @@ namespace ToDoListServerCore.Tests
             , string title, string description)
         {
             // Arrange
-            CreateToDoTaskDTO createToDoTaskDTO1 = new CreateToDoTaskDTO
+            CreateTodoTaskDTO createToDoTaskDTO1 = new CreateTodoTaskDTO
             {
                 ToDoListId = listId,
                 Title = title,
@@ -218,7 +218,7 @@ namespace ToDoListServerCore.Tests
             , TodoList todoList)
         {
             // Arrange
-            UpdateToDoTaskDTO updateToDoTaskDTO = new UpdateToDoTaskDTO
+            UpdateTodoTaskDTO updateToDoTaskDTO = new UpdateTodoTaskDTO
             {
                 TaskId = todoTaskDTO.Id,
                 ToDoListId = todoTaskDTO.ToDoListId,

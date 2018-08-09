@@ -32,7 +32,7 @@ namespace ToDoListServerCore.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> CreateTask([FromBody] CreateToDoTaskDTO createToDoTaskDTO)
+        public async Task<IActionResult> CreateTask([FromBody] CreateTodoTaskDTO createToDoTaskDTO)
         {
             if (!ModelState.IsValid)
                 return BadRequest("Error: Model state is not valid.");
@@ -124,7 +124,7 @@ namespace ToDoListServerCore.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpPut]
-        public async Task<IActionResult> UpdateTask([FromBody] UpdateToDoTaskDTO updateToDoTaskDTO)
+        public async Task<IActionResult> UpdateTask([FromBody] UpdateTodoTaskDTO updateToDoTaskDTO)
         {
             if (!ModelState.IsValid || updateToDoTaskDTO == null)
                 return BadRequest("Error: Model state is not valid.");
@@ -194,7 +194,7 @@ namespace ToDoListServerCore.Controllers
         [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTodoTask(int id) {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || id < 1)
                 return BadRequest("Error: Model state is not valid.");
 
             TodoTask todoTask = _context.GetTodoTaskById(id);

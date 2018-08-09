@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ToDoListServerCore.Models.DTO
 {
-    public class CreateToDoTaskDTO
+    public class CreateTodoTaskDTO
     {
         public int ToDoListId { set; get; }
 

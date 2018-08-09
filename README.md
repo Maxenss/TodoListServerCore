@@ -21,8 +21,13 @@ Necessary tools and frameworks:
 
  # How to get solution
 
- - Write in Git Bash: `git clone https://github.com/Maxenss/TodoListServerCore`
+ - Write in Git Bash: 
+    `git clone https://github.com/Maxenss/TodoListServerCore`
 
 # API Docs
 
 - Go to link https://github.com/Maxenss/TodoListServerCore/blob/master/API.md
+
+# Postman Collection
+
+- Solution contains Postman Collection. This is "TodoList API.postman_collection.json" in root of solution.
